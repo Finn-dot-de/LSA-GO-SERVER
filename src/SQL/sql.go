@@ -75,25 +75,24 @@ func ConnectToDB() (*sql.DB, error) {
 	return db, nil
 }
 
-// GetFragenFromDB ruft alle Fragen aus der Datenbank ab und gibt sie zurück.
-func GetFragenFromDB(db *sql.DB) ([]structs.Frage, error) {
+// GetFragenFromDBNachFach ruft alle Fragen zu einem bestimmten Thema aus der Datenbank ab und gibt sie zurück.
+func GetFragenFromDBNachFach(db *sql.DB, themaName string) ([]structs.Frage, error) {
 	rows, err := db.Query(`
 	SELECT 
-		fragen.frage_id, 
-		fragen.frage_text, 
-		themen.thema_id, 
-		themen.thema_name, 
-		themen.beschreibung, 
-		a.antwort_id, 
-		a.antwort_text, 
-		a.ist_korrekt
-	FROM 
-		quizschema.fragen
-	JOIN 
-		quizschema.moegliche_antworten AS a ON a.frage_id = fragen.frage_id
-	JOIN 
-		quizschema.themen ON fragen.thema_id = themen.thema_id;
-	`)
+	    fragen.frage_id, 
+	    fragen.frage_text, 
+	    themen.thema_id, 
+	    themen.thema_name, 
+	    themen.beschreibung, 
+	    a.antwort_id, 
+	    a.antwort_text, 
+	    a.ist_korrekt 
+	FROM quizschema.fragen 
+	    JOIN quizschema.moegliche_antworten 
+	        AS a ON a.frage_id = fragen.frage_id 
+	    JOIN quizschema.themen 
+	        ON fragen.thema_id = themen.thema_id 
+	WHERE themen.thema_name = $1;`, themaName)
 	if err != nil {
 		return nil, err
 	}

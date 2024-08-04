@@ -28,16 +28,20 @@ func main() {
 	r.Handle("/*", http.StripPrefix("/", fs))
 
 	// API-Endpunkte
-	r.Get("/api/fragen", func(w http.ResponseWriter, r *http.Request) {
-		// Fragen aus der Datenbank abrufen
-		fragen, err := SQL.GetFragenFromDB(db)
+	r.Get("/api/fragen/{name}", func(w http.ResponseWriter, r *http.Request) {
+		// Fachname aus dem Pfadparameter abrufen
+		fachName := chi.URLParam(r, "name")
+
+		// Fach aus der Datenbank abrufen
+		fach, err := SQL.GetFragenFromDBNachFach(db, fachName)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+
 		// JSON als Antwort senden
 		w.Header().Set("Content-Type", "application/json")
-		err = json.NewEncoder(w).Encode(fragen)
+		err = json.NewEncoder(w).Encode(fach)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
