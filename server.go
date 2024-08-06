@@ -49,7 +49,7 @@ func main() {
 	})
 
 	// Login-Handler
-	r.Post("/api/login", login.LoginHandler)
+	r.Get("/api/login", login.LoginHandler)
 
 	// Server starten und auf Port 8080 lauschen
 	log.Println("Der Server läuft auf 8080!!")
