@@ -6,38 +6,46 @@ import (
 	"database/sql" // Paket für die Interaktion mit SQL-Datenbanken.
 	"errors"       // Paket für das Handling von Fehlern.
 	"fmt"          // Paket für formatierte E/A.
-	"log"
+	"log"          // Paket für das Loggen von Informationen.
 
-	"github.com/Finn-dot-de/LernStoffAnwendung/src/structs" // Paket für die Structs für die JSON
+	"github.com/Finn-dot-de/LernStoffAnwendung/src/structs" // Paket für die Structs für die JSON-Verarbeitung.
 	_ "github.com/lib/pq"                                   // PostgreSQL-Treiber.
 )
 
-func GetUserByUsername(username string) (structs.Password, error) {
+// GetUserAndPasswordByUsername sucht einen Benutzer in der Datenbank anhand des Benutzernamens.
+func GetUserAndPasswordByUsername(username string) (structs.Password, error) {
+	// Verbindet sich mit der Datenbank.
 	db, err := ConnectToDB()
 	if err != nil {
-		return structs.Password{}, nil
+		return structs.Password{}, err
 	}
+	// Schließt die Datenbankverbindung am Ende der Funktion.
 	defer func(db *sql.DB) {
 		err := db.Close()
 		if err != nil {
-
+			log.Println("Error closing the database:", err)
 		}
 	}(db)
 
+	// Definiert Variablen für den Benutzer und das Passwort.
 	var user structs.User
 	var pwd structs.Password
+
+	// Führt die SQL-Abfrage aus, um den Benutzer und das Passwort zu finden.
 	err = db.QueryRow(`
-	SELECT 
-		b.name, 
-		bl.passwort 
-	FROM quizschema.benutzer 
-		AS b 
-	    	JOIN quizschema.benutzer_login 
-				AS bl ON b.id = bl.id 
-	WHERE b.name = $1;`,
+		SELECT 
+			b.name, 
+			bl.passwort 
+		FROM quizschema.benutzer AS b 
+		JOIN quizschema.benutzer_login AS bl ON b.id = bl.id 
+		WHERE b.name = $1;`,
 		username,
 	).Scan(&user.Username, &pwd.Password)
+
+	// Loggt das Ergebnis der Abfrage.
 	log.Println(err, user)
+
+	// Überprüft, ob ein Fehler aufgetreten ist.
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return structs.Password{}, errors.New("user not found")
@@ -45,6 +53,7 @@ func GetUserByUsername(username string) (structs.Password, error) {
 		return structs.Password{}, err
 	}
 
+	// Gibt das gefundene Passwort zurück.
 	return pwd, nil
 }
 
@@ -66,47 +75,95 @@ func ConnectToDB() (*sql.DB, error) {
 	// Versuch, eine Verbindung zur Datenbank herzustellen.
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
-		// Wenn ein Fehler auftritt, gibt nil und den Fehler zurück.
 		return nil, err
 	}
 
-	// Versuch, die Datenbank anzupingen.
+	// Versuch, die Datenbank anzupingen, um die Verbindung zu testen.
 	err = db.Ping()
 	if err != nil {
-		// Wenn ein Fehler auftritt, gibt nil und den Fehler zurück.
 		return nil, err
 	}
 
 	// Wenn die Verbindung erfolgreich hergestellt wurde, wird eine Erfolgsmeldung gedruckt.
 	fmt.Println("Successfully connected!")
+
 	// Gibt die Datenbankverbindung und nil für den Fehler zurück.
 	return db, nil
 }
 
+// GetFeacherFromDB ruft die Fächer aus der Datenbank ab und gibt sie als Slice zurück.
+func GetFeacherFromDB(db *sql.DB) ([]structs.Schulfach, error) {
+	// Führt eine SQL-Abfrage aus, um die Fächer zu erhalten.
+	rows, err := db.Query(`
+		SELECT 
+			beschreibung 
+		FROM quizschema.feacher;
+	`)
+	if err != nil {
+		return nil, err
+	}
+	// Schließt die Rows am Ende der Funktion.
+	defer rows.Close()
+
+	var feacher []structs.Schulfach
+	// Iteriert über die erhaltenen Rows.
+	for rows.Next() {
+		var fach string
+		if err := rows.Scan(&fach); err != nil {
+			return nil, err
+		}
+
+		// Überprüft, ob das Fach bereits in der Liste enthalten ist.
+		found := false
+		for i := range feacher {
+			if feacher[i].Schulfach == fach {
+				found = true
+				break
+			}
+		}
+
+		// Wenn das Fach nicht gefunden wurde, füge es zur Liste hinzu.
+		if !found {
+			feacher = append(feacher, structs.Schulfach{
+				Schulfach: fach,
+			})
+		}
+	}
+
+	// Überprüft auf Fehler während des Durchlaufs der Zeilen.
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	// Gibt die Liste der Fächer zurück.
+	return feacher, nil
+}
+
 // GetFragenFromDBNachFach ruft alle Fragen zu einem bestimmten Thema aus der Datenbank ab und gibt sie zurück.
-func GetFragenFromDBNachFach(db *sql.DB, themaName string) ([]structs.Frage, error) {
+func GetFragenFromDBNachFach(db *sql.DB, FachName string) ([]structs.Frage, error) {
+	// Führt eine SQL-Abfrage aus, um die Fragen zu einem bestimmten Fach zu erhalten.
 	rows, err := db.Query(`
 	SELECT 
 	    fragen.id, 
 	    fragen.frage_text, 
-	    themen.id, 
-	    themen.thema_name, 
-	    themen.beschreibung, 
+	    feacher.id, 
+	    feacher.fach, 
+	    feacher.beschreibung, 
 	    a.id, 
 	    a.antwort_text, 
 	    a.ist_korrekt 
 	FROM quizschema.fragen 
-	    JOIN quizschema.moegliche_antworten 
-	        AS a ON a.frage_id = fragen.id 
-	    JOIN quizschema.themen 
-	        ON fragen.thema_id = themen.id 
-	WHERE themen.thema_name = $1;`, themaName)
+	    JOIN quizschema.moegliche_antworten AS a ON a.frage_id = fragen.id 
+	    JOIN quizschema.feacher ON fragen.fach_id = feacher.id 
+	WHERE feacher.fach = $1;`, FachName)
 	if err != nil {
 		return nil, err
 	}
+	// Schließt die Rows am Ende der Funktion.
 	defer rows.Close()
 
 	var fragen []structs.Frage
+	// Iteriert über die erhaltenen Rows.
 	for rows.Next() {
 		var frageID, themaID int
 		var frageText, themaName, beschreibung string
@@ -114,13 +171,13 @@ func GetFragenFromDBNachFach(db *sql.DB, themaName string) ([]structs.Frage, err
 		var antwortText sql.NullString
 		var istKorrekt sql.NullBool
 
-		// Daten aus der Abfrage in Variablen scannen
+		// Daten aus der Abfrage in Variablen scannen.
 		err := rows.Scan(&frageID, &frageText, &themaID, &themaName, &beschreibung, &antwortID, &antwortText, &istKorrekt)
 		if err != nil {
 			return nil, err
 		}
 
-		// Überprüfen, ob die Frage bereits in der Liste vorhanden ist
+		// Überprüfen, ob die Frage bereits in der Liste vorhanden ist.
 		found := false
 		for i := range fragen {
 			if fragen[i].ID == frageID {
@@ -129,19 +186,19 @@ func GetFragenFromDBNachFach(db *sql.DB, themaName string) ([]structs.Frage, err
 			}
 		}
 
-		// Wenn die Frage nicht gefunden wurde, füge sie der Liste hinzu
+		// Wenn die Frage nicht gefunden wurde, füge sie der Liste hinzu.
 		if !found {
 			fragen = append(fragen, structs.Frage{
 				ID:           frageID,
 				FrageText:    frageText,
-				ThemaID:      themaID,
-				ThemaName:    themaName,
+				FachID:       themaID,
+				FachName:     themaName,
 				Beschreibung: beschreibung,
 				Antworten:    []structs.Antwort{},
 			})
 		}
 
-		// Füge die Antwort der entsprechenden Frage hinzu, falls vorhanden
+		// Füge die Antwort der entsprechenden Frage hinzu, falls vorhanden.
 		if antwortID.Valid {
 			fragen[len(fragen)-1].Antworten = append(fragen[len(fragen)-1].Antworten, structs.Antwort{
 				AntwortID:  int(antwortID.Int64),
@@ -150,10 +207,11 @@ func GetFragenFromDBNachFach(db *sql.DB, themaName string) ([]structs.Frage, err
 			})
 		}
 	}
-	// Überprüfen auf Fehler während des Durchlaufs der Zeilen
+	// Überprüfen auf Fehler während des Durchlaufs der Zeilen.
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
 
+	// Gibt die Liste der Fragen zurück.
 	return fragen, nil
 }

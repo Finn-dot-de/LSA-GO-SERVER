@@ -9,12 +9,12 @@ type Antwort struct {
 
 // Frage repräsentiert eine Frage aus der Datenbank.
 type Frage struct {
-	ID          int       `json:"id"`           // ID der Frage
-	FrageText   string    `json:"frageText"`    // Text der Frage
-	ThemaID     int       `json:"themaID"`      // ID des Themas, zu dem die Frage gehört
-	ThemaName   string    `json:"themaName"`    // Name des Themas, zu dem die Frage gehört
-	Beschreibung string   `json:"beschreibung"` // Beschreibung des Themas
-	Antworten   []Antwort `json:"antworten"`    // Antwortmöglichkeiten zu dieser Frage
+	ID           int       `json:"id"`           // ID der Frage
+	FrageText    string    `json:"frageText"`    // Text der Frage
+	FachID       int       `json:"themaID"`      // ID des Themas, zu dem die Frage gehört
+	FachName     string    `json:"themaName"`    // Name des Themas, zu dem die Frage gehört
+	Beschreibung string    `json:"beschreibung"` // Beschreibung des Themas
+	Antworten    []Antwort `json:"antworten"`    // Antwortmöglichkeiten zu dieser Frage
 }
 
 // LoginData repräsentiert die Anmeldedaten eines Benutzers.
@@ -30,4 +30,8 @@ type User struct {
 
 type Password struct {
 	Password string
+}
+
+type Schulfach struct {
+	Schulfach string `json:"fach"`
 }

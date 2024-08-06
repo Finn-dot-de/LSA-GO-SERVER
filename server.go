@@ -18,6 +18,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
 	defer func(db *sql.DB) {
 		err := db.Close()
 		if err != nil {
@@ -54,8 +55,24 @@ func main() {
 		}
 	})
 
+	r.Get("/api/faecher", func(w http.ResponseWriter, r *http.Request) {
+
+		faecher, err := SQL.GetFeacherFromDB(db)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		err = json.NewEncoder(w).Encode(faecher)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	})
+
 	// Login-Handler
-	r.Get("/api/login", login.LoginHandler)
+	r.Post("/api/login", login.LoginHandler)
 
 	// Server starten und auf Port 8080 lauschen
 	log.Println("Der Server läuft auf 8080!!")

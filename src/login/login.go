@@ -21,7 +21,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pwd, err := SQL.GetUserByUsername(loginData.Username)
+	pwd, err := SQL.GetUserAndPasswordByUsername(loginData.Username)
 	if err != nil {
 		fmt.Println("Fehler beim Abrufen des Benutzers aus der Datenbank:", err)
 		http.Error(w, "Invalid username or password", http.StatusUnauthorized)
