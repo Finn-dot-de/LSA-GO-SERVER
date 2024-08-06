@@ -8,8 +8,6 @@ import (
 	"fmt"          // Paket für formatierte E/A.
 	"log"
 
-	"golang.org/x/crypto/bcrypt" // Paket für Passwort-Hashing.
-
 	"github.com/Finn-dot-de/LernStoffAnwendung/src/structs" // Paket für die Structs für die JSON
 	_ "github.com/lib/pq"                                   // PostgreSQL-Treiber.
 )
@@ -19,11 +17,26 @@ func GetUserByUsername(username string) (structs.Password, error) {
 	if err != nil {
 		return structs.Password{}, nil
 	}
-	defer db.Close()
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+
+		}
+	}(db)
 
 	var user structs.User
 	var pwd structs.Password
-	err = db.QueryRow("SELECT b.name, bl.passwort FROM quizschema.benutzer AS b JOIN quizschema.benutzer_login AS bl ON b.id = bl.benutzer_id WHERE b.name = $1;", username).Scan(&user.Username, &pwd.Password)
+	err = db.QueryRow(`
+	SELECT 
+		b.name, 
+		bl.passwort 
+	FROM quizschema.benutzer 
+		AS b 
+	    	JOIN quizschema.benutzer_login 
+				AS bl ON b.id = bl.id 
+	WHERE b.name = $1;`,
+		username,
+	).Scan(&user.Username, &pwd.Password)
 	log.Println(err, user)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -33,11 +46,6 @@ func GetUserByUsername(username string) (structs.Password, error) {
 	}
 
 	return pwd, nil
-}
-
-func CheckPasswordHash(password, hash string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-	return err == nil
 }
 
 // ConnectToDB stellt eine Verbindung zur Datenbank her und gibt diese zurück.
@@ -79,19 +87,19 @@ func ConnectToDB() (*sql.DB, error) {
 func GetFragenFromDBNachFach(db *sql.DB, themaName string) ([]structs.Frage, error) {
 	rows, err := db.Query(`
 	SELECT 
-	    fragen.frage_id, 
+	    fragen.id, 
 	    fragen.frage_text, 
-	    themen.thema_id, 
+	    themen.id, 
 	    themen.thema_name, 
 	    themen.beschreibung, 
-	    a.antwort_id, 
+	    a.id, 
 	    a.antwort_text, 
 	    a.ist_korrekt 
 	FROM quizschema.fragen 
 	    JOIN quizschema.moegliche_antworten 
-	        AS a ON a.frage_id = fragen.frage_id 
+	        AS a ON a.frage_id = fragen.id 
 	    JOIN quizschema.themen 
-	        ON fragen.thema_id = themen.thema_id 
+	        ON fragen.thema_id = themen.id 
 	WHERE themen.thema_name = $1;`, themaName)
 	if err != nil {
 		return nil, err
