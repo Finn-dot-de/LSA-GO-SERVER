@@ -7,6 +7,7 @@ import (
 	"errors"       // Paket für das Handling von Fehlern.
 	"fmt"          // Paket für formatierte E/A.
 	"log"          // Paket für das Loggen von Informationen.
+	"os"
 
 	"github.com/Finn-dot-de/LernStoffAnwendung/src/structs" // Paket für die Structs für die JSON-Verarbeitung.
 	_ "github.com/lib/pq"                                   // PostgreSQL-Treiber.
@@ -33,11 +34,11 @@ func GetUserAndPasswordByUsername(username string) (structs.Password, error) {
 
 	// Führt die SQL-Abfrage aus, um den Benutzer und das Passwort zu finden.
 	err = db.QueryRow(`
-		SELECT 
-			b.name, 
-			bl.passwort 
-		FROM quizschema.benutzer AS b 
-		JOIN quizschema.benutzer_login AS bl ON b.id = bl.id 
+		SELECT
+			b.name,
+			bl.passwort
+		FROM quizschema.benutzer AS b
+			JOIN quizschema.benutzer_login AS bl ON b.id = bl.id
 		WHERE b.name = $1;`,
 		username,
 	).Scan(&user.Username, &pwd.Password)
@@ -59,17 +60,15 @@ func GetUserAndPasswordByUsername(username string) (structs.Password, error) {
 
 // ConnectToDB stellt eine Verbindung zur Datenbank her und gibt diese zurück.
 func ConnectToDB() (*sql.DB, error) {
-	// Konstanten für die Datenbankverbindung.
-	const (
-		host     = "localhost" // Der Host der Datenbank.
-		port     = 5432        // Der Port der Datenbank.
-		user     = "learner"   // Der Benutzername für die Datenbank.
-		password = "learner"   // Das Passwort für die Datenbank.
-		dbname   = "quizdb"    // Der Name der Datenbank.
-	)
+	// Laden der Umgebungsvariablen.
+	host := os.Getenv("POSTGRES_HOST")
+	port := os.Getenv("POSTGRES_PORT")
+	user := os.Getenv("POSTGRES_USER")
+	password := os.Getenv("POSTGRES_PASSWORD")
+	dbname := os.Getenv("POSTGRES_DB")
 
 	// Erstellen der Verbindungszeichenkette.
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 
 	// Versuch, eine Verbindung zur Datenbank herzustellen.
@@ -95,8 +94,8 @@ func ConnectToDB() (*sql.DB, error) {
 func GetFeacherFromDB(db *sql.DB) ([]structs.Schulfach, error) {
 	// Führt eine SQL-Abfrage aus, um die Fächer zu erhalten.
 	rows, err := db.Query(`
-		SELECT 
-			beschreibung 
+		SELECT
+			fach
 		FROM quizschema.feacher;
 	`)
 	if err != nil {
@@ -143,18 +142,18 @@ func GetFeacherFromDB(db *sql.DB) ([]structs.Schulfach, error) {
 func GetFragenFromDBNachFach(db *sql.DB, FachName string) ([]structs.Frage, error) {
 	// Führt eine SQL-Abfrage aus, um die Fragen zu einem bestimmten Fach zu erhalten.
 	rows, err := db.Query(`
-	SELECT 
-	    fragen.id, 
-	    fragen.frage_text, 
-	    feacher.id, 
-	    feacher.fach, 
-	    feacher.beschreibung, 
-	    a.id, 
-	    a.antwort_text, 
-	    a.ist_korrekt 
-	FROM quizschema.fragen 
-	    JOIN quizschema.moegliche_antworten AS a ON a.frage_id = fragen.id 
-	    JOIN quizschema.feacher ON fragen.fach_id = feacher.id 
+	SELECT
+	    fragen.id,
+	    fragen.frage_text,
+	    feacher.id,
+	    feacher.fach,
+	    feacher.beschreibung,
+	    a.id,
+	    a.antwort_text,
+	    a.ist_korrekt
+	FROM quizschema.fragen
+	    JOIN quizschema.moegliche_antworten AS a ON a.frage_id = fragen.id
+	    JOIN quizschema.feacher ON fragen.fach_id = feacher.id
 	WHERE feacher.fach = $1;`, FachName)
 	if err != nil {
 		return nil, err
