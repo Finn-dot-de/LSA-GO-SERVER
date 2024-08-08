@@ -37,8 +37,8 @@ func GetUserAndPasswordByUsername(username string) (structs.Password, error) {
 		SELECT
 			b.name,
 			bl.passwort
-		FROM quizschema.benutzer AS b
-			JOIN quizschema.benutzer_login AS bl ON b.id = bl.id
+		FROM benutzer AS b
+			JOIN benutzer_login AS bl ON b.id = bl.id
 		WHERE b.name = $1;`,
 		username,
 	).Scan(&user.Username, &pwd.Password)
@@ -96,7 +96,7 @@ func GetFeacherFromDB(db *sql.DB) ([]structs.Schulfach, error) {
 	rows, err := db.Query(`
 		SELECT
 			fach
-		FROM quizschema.feacher;
+		FROM feacher;
 	`)
 	if err != nil {
 		return nil, err
@@ -151,9 +151,9 @@ func GetFragenFromDBNachFach(db *sql.DB, FachName string) ([]structs.Frage, erro
 	    a.id,
 	    a.antwort_text,
 	    a.ist_korrekt
-	FROM quizschema.fragen
-	    JOIN quizschema.moegliche_antworten AS a ON a.frage_id = fragen.id
-	    JOIN quizschema.feacher ON fragen.fach_id = feacher.id
+	FROM fragen
+	    JOIN moegliche_antworten AS a ON a.frage_id = fragen.id
+	    JOIN feacher ON fragen.fach_id = feacher.id
 	WHERE feacher.fach = $1;`, FachName)
 	if err != nil {
 		return nil, err
