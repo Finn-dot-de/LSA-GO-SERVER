@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/Finn-dot-de/LernStoffAnwendung/src/SQL"
 	"github.com/Finn-dot-de/LernStoffAnwendung/src/login"
@@ -75,6 +76,7 @@ func main() {
 	r.Post("/api/login", login.LoginHandler)
 
 	// Server starten und auf Port 8080 lauschen
+	appPort := os.Getenv("APP_PORT")
 	log.Println("Der Server läuft auf 8080!!")
-	log.Fatal(http.ListenAndServe(":8080", r))
+	log.Fatal(http.ListenAndServe(":"+appPort, r))
 }
