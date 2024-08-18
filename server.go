@@ -30,6 +30,7 @@ func main() {
 	r := chi.NewRouter()
 
 	r.Use(utils.LoggerMiddleware)
+	r.Use(utils.NoCacheMiddleware) // Fügen Sie die NoCacheMiddleware hinzu
 
 	// Statische Dateien servieren (z. B. für Angular-Anwendung)
 	fs := http.FileServer(http.Dir("./project"))
