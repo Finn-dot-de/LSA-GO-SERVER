@@ -78,6 +78,9 @@ func main() {
 
 	// Server starten und auf Port 8080 lauschen
 	appPort := os.Getenv("APP_PORT")
-	log.Println("Der Server läuft auf 8080!!")
+	if appPort == "" {
+		appPort = "8080" // Fallback auf Port 8080, wenn APP_PORT nicht gesetzt ist
+	}
+	log.Println("Der Server läuft auf Port " + appPort + "!")
 	log.Fatal(http.ListenAndServe(":"+appPort, r))
 }
