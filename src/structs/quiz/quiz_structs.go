@@ -1,4 +1,4 @@
-package structs
+package quizstructs
 
 // Antwort repräsentiert eine Antwortmöglichkeit zu einer Frage.
 type Antwort struct {
@@ -15,21 +15,6 @@ type Frage struct {
 	FachName     string    `json:"themaName"`    // Name des Themas, zu dem die Frage gehört
 	Beschreibung string    `json:"beschreibung"` // Beschreibung des Themas
 	Antworten    []Antwort `json:"antworten"`    // Antwortmöglichkeiten zu dieser Frage
-}
-
-// LoginData repräsentiert die Anmeldedaten eines Benutzers.
-type LoginData struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
-
-// User repräsentiert einen Benutzer in der Datenbank.
-type User struct {
-	Username string
-}
-
-type Password struct {
-	Password string
 }
 
 type Schulfach struct {

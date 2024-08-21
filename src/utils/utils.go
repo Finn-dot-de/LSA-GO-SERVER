@@ -9,13 +9,13 @@ import (
 
 // LoggerMiddleware ist eine Middleware-Funktion, die Protokollinformationen für jede HTTP-Anfrage ausgibt.
 func LoggerMiddleware(next http.Handler) http.Handler {
-	// Ein HandlerFunc ist ein Adapter, der eine Funktion in einen http.Handler umwandelt.
+	// Ein HandlerFunc ist ein Adapter, der eine Funktion in einen http.handler umwandelt.
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Die Startzeit der Anfrage wird aufgezeichnet.
 		start := time.Now()
 		// Protokolliert die Startzeit, Methode, URL und Remote-Adresse der Anfrage.
 		log.Printf("Startzeit: %s | Methode: %s | URL: %s | RemoteAddr: %s", start.Format(time.RFC1123), r.Method, r.RequestURI, r.RemoteAddr)
-		// Ruft den nächsten Handler in der Kette auf.
+		// Ruft den nächsten handler in der Kette auf.
 		next.ServeHTTP(w, r)
 		// Die Endzeit der Anfrage wird aufgezeichnet.
 		end := time.Now()

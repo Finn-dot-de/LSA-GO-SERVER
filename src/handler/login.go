@@ -1,18 +1,16 @@
-package login
+package handler
 
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
-
+	"github.com/Finn-dot-de/LernStoffAnwendung/src/sql/get"
+	"github.com/Finn-dot-de/LernStoffAnwendung/src/structs/login"
 	"golang.org/x/crypto/bcrypt"
-
-	"github.com/Finn-dot-de/LernStoffAnwendung/src/SQL"
-	"github.com/Finn-dot-de/LernStoffAnwendung/src/structs"
+	"net/http"
 )
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
-	var loginData structs.LoginData
+	var loginData login.LoginData
 	fmt.Println("Login")
 	err := json.NewDecoder(r.Body).Decode(&loginData)
 	if err != nil {
@@ -21,7 +19,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pwd, err := SQL.GetUserAndPasswordByUsername(loginData.Username)
+	pwd, err := get.GetUserAndPasswordByUsername(loginData.Username)
 	if err != nil {
 		fmt.Println("Fehler beim Abrufen des Benutzers aus der Datenbank:", err)
 		http.Error(w, "Invalid username or password", http.StatusUnauthorized)
