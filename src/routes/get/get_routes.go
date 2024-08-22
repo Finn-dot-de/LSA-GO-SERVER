@@ -44,4 +44,15 @@ func DefineGetRoutes(r *chi.Mux, db *sql.DB) {
 			return
 		}
 	})
+
+	// Route zum Abrufen des Links
+	r.Get("/api/link", func(w http.ResponseWriter, r *http.Request) {
+		link := struct {
+			URL string `json:"url"`
+		}{
+			URL: "/oauth2/sign_out?rd=https%3A%2F%2Fgithub.com%2Flogout", // Dynamisch generierter oder statischer Link
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(link)
+	})
 }
