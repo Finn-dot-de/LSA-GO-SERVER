@@ -13,15 +13,15 @@ func GetFragenFromDBNachFach(db *sql.DB, FachName string) ([]quizstructs.Frage, 
 	    fragen.id,
 	    fragen.frage_text,
 	    feacher.id,
-	    feacher.fach,
-	    feacher.beschreibung,
+	    feacher.kurzform,
+	    feacher.langform,
 	    a.id,
 	    a.antwort_text,
 	    a.ist_korrekt
 	FROM fragen
 	    JOIN moegliche_antworten AS a ON a.frage_id = fragen.id
 	    JOIN feacher ON fragen.fach_id = feacher.id
-	WHERE feacher.fach = $1;`, FachName)
+	WHERE feacher.kurzform = $1;`, FachName)
 	if err != nil {
 		return nil, err
 	}
@@ -32,13 +32,13 @@ func GetFragenFromDBNachFach(db *sql.DB, FachName string) ([]quizstructs.Frage, 
 	// Iteriert über die erhaltenen Rows.
 	for rows.Next() {
 		var frageID, themaID int
-		var frageText, themaName, beschreibung string
+		var frageText, themaName, langform string
 		var antwortID sql.NullInt64
 		var antwortText sql.NullString
 		var istKorrekt sql.NullBool
 
 		// Daten aus der Abfrage in Variablen scannen.
-		err := rows.Scan(&frageID, &frageText, &themaID, &themaName, &beschreibung, &antwortID, &antwortText, &istKorrekt)
+		err := rows.Scan(&frageID, &frageText, &themaID, &themaName, &langform, &antwortID, &antwortText, &istKorrekt)
 		if err != nil {
 			return nil, err
 		}
@@ -55,12 +55,12 @@ func GetFragenFromDBNachFach(db *sql.DB, FachName string) ([]quizstructs.Frage, 
 		// Wenn die Frage nicht gefunden wurde, füge sie der Liste hinzu.
 		if !found {
 			fragen = append(fragen, quizstructs.Frage{
-				ID:           frageID,
-				FrageText:    frageText,
-				FachID:       themaID,
-				FachName:     themaName,
-				Beschreibung: beschreibung,
-				Antworten:    []quizstructs.Antwort{},
+				ID:        frageID,
+				FrageText: frageText,
+				FachID:    themaID,
+				FachName:  themaName,
+				Langform:  langform,
+				Antworten: []quizstructs.Antwort{},
 			})
 		}
 

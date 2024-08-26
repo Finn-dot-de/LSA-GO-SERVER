@@ -10,7 +10,7 @@ func GetFeacherFromDB(db *sql.DB) ([]quizstructs.Schulfach, error) {
 	// Führt eine sql-Abfrage aus, um die Fächer zu erhalten.
 	rows, err := db.Query(`
 		SELECT
-			fach
+			kurzform
 		FROM feacher;
 	`)
 	if err != nil {
