@@ -2,6 +2,7 @@
 package utils
 
 import (
+	"github.com/dgrijalva/jwt-go"
 	"log"      // Das Paket "log" stellt Funktionen zum Schreiben von Protokollen zur Verfügung.
 	"net/http" // Das Paket "net/http" stellt HTTP-Client- und Server-Implementierungen zur Verfügung.
 	"time"     // Das Paket "time" stellt Funktionen zum Messen und Anzeigen von Zeit zur Verfügung.
@@ -27,6 +28,30 @@ func LoggerMiddleware(next http.Handler) http.Handler {
 func NoCacheMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Cache-Control", "no-store")
+		next.ServeHTTP(w, r)
+	})
+}
+
+func JWTAuthMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Lese den JWT-Token aus dem Cookie
+		cookie, err := r.Cookie("jwt")
+		if err != nil {
+			log.Println("JWT Cookie nicht gefunden:", err)
+			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			return
+		}
+
+		// Validierung des Tokens
+		token, err := ValidateJWT(cookie.Value)
+		if err != nil || !token.Valid {
+			log.Println("JWT-Token ungültig:", err)
+			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			return
+		}
+
+		log.Println("JWT-Token gültig für Benutzer:", token.Claims.(jwt.MapClaims)["user_id"])
+		// Weiterleitung an den nächsten Handler
 		next.ServeHTTP(w, r)
 	})
 }

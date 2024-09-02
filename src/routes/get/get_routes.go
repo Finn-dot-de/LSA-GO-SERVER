@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/Finn-dot-de/LernStoffAnwendung/src/auth"
 	"github.com/Finn-dot-de/LernStoffAnwendung/src/sql/get"
 	"github.com/go-chi/chi"
 )
@@ -55,4 +56,7 @@ func DefineGetRoutes(r *chi.Mux, db *sql.DB) {
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(link)
 	})
+
+	// Benutzerinformationen abrufen
+	r.Get("/api/user/", auth.GetUserHandler)
 }

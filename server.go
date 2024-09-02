@@ -2,12 +2,13 @@ package main
 
 import (
 	"database/sql"
-	"github.com/Finn-dot-de/LernStoffAnwendung/src/routes/get"
-	"github.com/Finn-dot-de/LernStoffAnwendung/src/routes/post"
 	"log"
 	"net/http"
 	"os"
 
+	"github.com/Finn-dot-de/LernStoffAnwendung/src/auth"
+	"github.com/Finn-dot-de/LernStoffAnwendung/src/routes/get"
+	"github.com/Finn-dot-de/LernStoffAnwendung/src/routes/post"
 	"github.com/Finn-dot-de/LernStoffAnwendung/src/sql/connection"
 	"github.com/Finn-dot-de/LernStoffAnwendung/src/utils"
 	"github.com/go-chi/chi"
@@ -29,16 +30,21 @@ func main() {
 
 	r := chi.NewRouter()
 
+	// Registrierung der Middleware-Funktionen
 	r.Use(utils.LoggerMiddleware)
 	r.Use(utils.NoCacheMiddleware)
+	r.Use(utils.JWTAuthMiddleware)
 
-	// Statische Dateien servieren (z. B. für Angular-Anwendung)
-	fs := http.FileServer(http.Dir("./project"))
-	r.Handle("/*", http.StripPrefix("/", fs))
+	// Route für den OAuth2-Callback
+	r.Get("/oauth2/callback", auth.OAuth2CallbackHandler)
 
 	// GET- und POST-Routen definieren
 	get.DefineGetRoutes(r, db)
 	post.DefinePostRoutes(r)
+
+	// Statische Dateien servieren (z. B. für Angular-Anwendung)
+	fs := http.FileServer(http.Dir("./project"))
+	r.Handle("/*", http.StripPrefix("/", fs))
 
 	// Server starten und auf Port 8080 lauschen
 	appPort := os.Getenv("APP_PORT")
