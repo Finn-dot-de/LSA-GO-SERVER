@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/Finn-dot-de/LernStoffAnwendung/src/auth"
 	"github.com/Finn-dot-de/LernStoffAnwendung/src/routes/get"
 	"github.com/Finn-dot-de/LernStoffAnwendung/src/routes/post"
 	"github.com/Finn-dot-de/LernStoffAnwendung/src/sql/connection"
@@ -33,10 +32,6 @@ func main() {
 	// Registrierung der Middleware-Funktionen
 	r.Use(utils.LoggerMiddleware)
 	r.Use(utils.NoCacheMiddleware)
-	r.Use(utils.JWTAuthMiddleware)
-
-	// Route für den OAuth2-Callback
-	r.Get("/oauth2/callback", auth.OAuth2CallbackHandler)
 
 	// GET- und POST-Routen definieren
 	get.DefineGetRoutes(r, db)

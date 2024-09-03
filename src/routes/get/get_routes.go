@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/Finn-dot-de/LernStoffAnwendung/src/auth"
 	"github.com/Finn-dot-de/LernStoffAnwendung/src/sql/get"
 	"github.com/go-chi/chi"
 )
@@ -47,16 +46,17 @@ func DefineGetRoutes(r *chi.Mux, db *sql.DB) {
 	})
 
 	// Route zum Abrufen des Links
-	r.Get("/api/link", func(w http.ResponseWriter, r *http.Request) {
+	r.Get("/logout/link", func(w http.ResponseWriter, r *http.Request) {
 		link := struct {
 			URL string `json:"url"`
 		}{
 			URL: "/oauth2/sign_out?rd=https%3A%2F%2Fgithub.com%2Flogout", // Dynamisch generierter oder statischer Link
 		}
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(link)
+		err := json.NewEncoder(w).Encode(link)
+		if err != nil {
+			return
+		}
 	})
 
-	// Benutzerinformationen abrufen
-	r.Get("/api/user/", auth.GetUserHandler)
 }
