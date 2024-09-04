@@ -35,7 +35,7 @@ func main() {
 
 	// GET- und POST-Routen definieren
 	get.DefineGetRoutes(r, db)
-	post.DefinePostRoutes(r)
+	post.DefinePostRoutes(r, db)
 
 	// Statische Dateien servieren (z. B. für Angular-Anwendung)
 	fs := http.FileServer(http.Dir("./project"))
