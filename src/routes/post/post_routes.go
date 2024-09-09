@@ -12,9 +12,17 @@ import (
 
 // DefinePostRoutes definiert alle POST-Routen der Anwendung
 func DefinePostRoutes(r *chi.Mux, db *sql.DB) {
-	//r.Post("/api/save/own/files", insert.SaveFiles) { })
+	//r.Post("/app/api/save/own/files", insert.SaveFiles) { })
 
-	r.Post("/api/save/lerning/site", func(w http.ResponseWriter, r *http.Request) {
+	r.Options("/app/api/save/lerning/site", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080") // Anpassen auf dein Setup
+		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
+		w.WriteHeader(http.StatusOK)
+	})
+
+	r.Post("/app/api/save/lerning/site", func(w http.ResponseWriter, r *http.Request) {
 		// Daten aus der Anfrage lesen
 		var req structs.SaveRequest
 		err := json.NewDecoder(r.Body).Decode(&req)

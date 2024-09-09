@@ -32,7 +32,7 @@ func OAuth2CallbackHandler(w http.ResponseWriter, r *http.Request) {
 		HttpOnly: true,
 		Path:     "/",         // Der Cookie ist für alle Routen verfügbar
 		Domain:   "localhost", // In der Produktion sollte hier deine tatsächliche Domain stehen
-		Secure:   false,       // Setze auf true, wenn du HTTPS verwendest
+		Secure:   true,        // Setze auf true, wenn du HTTPS verwendest
 		SameSite: http.SameSiteLaxMode,
 		Expires:  time.Now().Add(24 * time.Hour), // Der Cookie läuft nach 24 Stunden ab
 	}

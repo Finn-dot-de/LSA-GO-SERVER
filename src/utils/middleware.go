@@ -34,6 +34,8 @@ func NoCacheMiddleware(next http.Handler) http.Handler {
 func JWTAuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		cookie, err := r.Cookie("jwt")
+		log.Println(err)
+		log.Println(cookie)
 		if err != nil {
 			log.Println("JWT Cookie nicht gefunden:", err)
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)

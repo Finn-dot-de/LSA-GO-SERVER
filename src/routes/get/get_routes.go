@@ -16,7 +16,7 @@ import (
 // DefineGetRoutes definiert alle GET-Routen der Anwendung
 func DefineGetRoutes(r *chi.Mux, db *sql.DB) {
 	// Fachbezogene Fragen abrufen
-	r.Get("/api/fragen/{name}", func(w http.ResponseWriter, r *http.Request) {
+	r.Get("/app/api/fragen/{name}", func(w http.ResponseWriter, r *http.Request) {
 		fachName := chi.URLParam(r, "name")
 
 		fach, err := get.GetFragenFromDBNachFach(db, fachName)
@@ -34,7 +34,7 @@ func DefineGetRoutes(r *chi.Mux, db *sql.DB) {
 	})
 
 	// Alle Fächer abrufen
-	r.Get("/api/faecher", func(w http.ResponseWriter, r *http.Request) {
+	r.Get("/app/api/faecher", func(w http.ResponseWriter, r *http.Request) {
 		faecher, err := get.GetFeacherFromDB(db)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -64,7 +64,7 @@ func DefineGetRoutes(r *chi.Mux, db *sql.DB) {
 	})
 
 	// API-Endpunkt für das Abrufen einer Datei basierend auf ihrer ID
-	r.Get("/api/getlernsite", func(w http.ResponseWriter, r *http.Request) {
+	r.Get("/app/api/getlernsite", func(w http.ResponseWriter, r *http.Request) {
 		idStr := r.URL.Query().Get("id")
 		if idStr == "" {
 			http.Error(w, "ID fehlt", http.StatusBadRequest)
@@ -94,7 +94,7 @@ func DefineGetRoutes(r *chi.Mux, db *sql.DB) {
 		json.NewEncoder(w).Encode(lernseite)
 	})
 
-	r.Get("/api/get/user", func(w http.ResponseWriter, r *http.Request) {
+	r.Get("/app/api/get/user", func(w http.ResponseWriter, r *http.Request) {
 		// Benutzer-Kürzel aus dem Header auslesen
 		userkuerzel := r.Header.Get("X-Forwarded-User")
 

@@ -2,6 +2,7 @@ package get
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"github.com/Finn-dot-de/LernStoffAnwendung/src/structs/structs"
 )
@@ -15,7 +16,7 @@ func GetUserFromDB(userkuerzel string, db *sql.DB) (*structs.Benutzer, error) {
 	var benutzer structs.Benutzer
 	err := row.Scan(&benutzer.ID, &benutzer.Vorname, &benutzer.Nachname, &benutzer.Rolle, &benutzer.Userkuerzel)
 	if err != nil {
-		if err == sql.ErrNoRows {
+		if errors.Is(err, sql.ErrNoRows) {
 			return nil, fmt.Errorf("Benutzername '%s' nicht gefunden", userkuerzel)
 		}
 		return nil, fmt.Errorf("Fehler beim Abrufen der Benutzerdaten: %v", err)
