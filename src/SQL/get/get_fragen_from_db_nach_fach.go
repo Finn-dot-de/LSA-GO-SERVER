@@ -2,11 +2,11 @@ package get
 
 import (
 	"database/sql"
-	"github.com/Finn-dot-de/LernStoffAnwendung/src/structs/quiz"
+	"github.com/Finn-dot-de/LernStoffAnwendung/src/structs/structs"
 )
 
 // GetFragenFromDBNachFach ruft alle Fragen zu einem bestimmten Thema aus der Datenbank ab und gibt sie zurück.
-func GetFragenFromDBNachFach(db *sql.DB, FachName string) ([]quizstructs.Frage, error) {
+func GetFragenFromDBNachFach(db *sql.DB, FachName string) ([]structs.Frage, error) {
 	// Führt eine sql-Abfrage aus, um die Fragen zu einem bestimmten Fach zu erhalten.
 	rows, err := db.Query(`
 	SELECT
@@ -28,7 +28,7 @@ func GetFragenFromDBNachFach(db *sql.DB, FachName string) ([]quizstructs.Frage, 
 	// Schließt die Rows am Ende der Funktion.
 	defer rows.Close()
 
-	var fragen []quizstructs.Frage
+	var fragen []structs.Frage
 	// Iteriert über die erhaltenen Rows.
 	for rows.Next() {
 		var frageID, themaID int
@@ -54,19 +54,19 @@ func GetFragenFromDBNachFach(db *sql.DB, FachName string) ([]quizstructs.Frage, 
 
 		// Wenn die Frage nicht gefunden wurde, füge sie der Liste hinzu.
 		if !found {
-			fragen = append(fragen, quizstructs.Frage{
+			fragen = append(fragen, structs.Frage{
 				ID:        frageID,
 				FrageText: frageText,
 				FachID:    themaID,
 				FachName:  themaName,
 				Langform:  langform,
-				Antworten: []quizstructs.Antwort{},
+				Antworten: []structs.Antwort{},
 			})
 		}
 
 		// Füge die Antwort der entsprechenden Frage hinzu, falls vorhanden.
 		if antwortID.Valid {
-			fragen[len(fragen)-1].Antworten = append(fragen[len(fragen)-1].Antworten, quizstructs.Antwort{
+			fragen[len(fragen)-1].Antworten = append(fragen[len(fragen)-1].Antworten, structs.Antwort{
 				AntwortID:  int(antwortID.Int64),
 				Antwort:    antwortText.String,
 				IstKorrekt: istKorrekt.Bool,

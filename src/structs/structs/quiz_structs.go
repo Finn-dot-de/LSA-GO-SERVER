@@ -1,4 +1,4 @@
-package quizstructs
+package structs
 
 // Antwort repräsentiert eine Antwortmöglichkeit zu einer Frage.
 type Antwort struct {

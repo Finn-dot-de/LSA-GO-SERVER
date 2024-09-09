@@ -2,11 +2,11 @@ package get
 
 import (
 	"database/sql"
-	"github.com/Finn-dot-de/LernStoffAnwendung/src/structs/quiz"
+	"github.com/Finn-dot-de/LernStoffAnwendung/src/structs/structs"
 )
 
 // GetFeacherFromDB ruft die Fächer aus der Datenbank ab und gibt sie als Slice zurück.
-func GetFeacherFromDB(db *sql.DB) ([]quizstructs.Schulfach, error) {
+func GetFeacherFromDB(db *sql.DB) ([]structs.Schulfach, error) {
 	// Führt eine sql-Abfrage aus, um die Fächer zu erhalten.
 	rows, err := db.Query(`
 		SELECT
@@ -19,7 +19,7 @@ func GetFeacherFromDB(db *sql.DB) ([]quizstructs.Schulfach, error) {
 	// Schließt die Rows am Ende der Funktion.
 	defer rows.Close()
 
-	var feacher []quizstructs.Schulfach
+	var feacher []structs.Schulfach
 	// Iteriert über die erhaltenen Rows.
 	for rows.Next() {
 		var fach string
@@ -38,7 +38,7 @@ func GetFeacherFromDB(db *sql.DB) ([]quizstructs.Schulfach, error) {
 
 		// Wenn das Fach nicht gefunden wurde, füge es zur Liste hinzu.
 		if !found {
-			feacher = append(feacher, quizstructs.Schulfach{
+			feacher = append(feacher, structs.Schulfach{
 				Schulfach: fach,
 			})
 		}
