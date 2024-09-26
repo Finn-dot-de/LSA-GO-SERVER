@@ -1,0 +1,165 @@
+2024/09/26 14:27:45 server.go:65: Der Server läuft auf Port 8080!
+2024/09/26 14:28:01 middleware.go:42: Startzeit: Thu, 26 Sep 2024 14:28:01 CEST | Methode: GET | URL: / | RemoteAddr: [::1]:53669
+2024/09/26 14:28:01 auth.go:13: Hier >>>>>>>>>>>>> 
+2024/09/26 14:28:01 auth.go:15: Fehler: Kein Benutzername im Header gefunden
+2024/09/26 14:28:01 middleware.go:49: Endzeit: Thu, 26 Sep 2024 14:28:01 CEST | Dauer: 498.1µs
+2024/09/26 14:28:01 middleware.go:42: Startzeit: Thu, 26 Sep 2024 14:28:01 CEST | Methode: GET | URL: /favicon.ico | RemoteAddr: [::1]:53669
+2024/09/26 14:28:01 middleware.go:79: JWT Cookie nicht gefunden: http: named cookie not present
+2024/09/26 14:28:01 middleware.go:49: Endzeit: Thu, 26 Sep 2024 14:28:01 CEST | Dauer: 1.0438ms
+2024/09/26 14:30:50 server.go:65: Der Server läuft auf Port 8080!
+2024/09/26 14:33:50 server.go:65: Der Server läuft auf Port 8080!
+2024/09/26 14:35:43 server.go:65: Der Server läuft auf Port 8080!
+2024/09/26 14:43:22 middleware.go:42: Startzeit: Thu, 26 Sep 2024 14:43:22 CEST | Methode: GET | URL: /oauth2/callback | RemoteAddr: [::1]:53042
+2024/09/26 14:43:22 middleware.go:79: JWT Cookie nicht gefunden: http: named cookie not present
+2024/09/26 14:43:22 middleware.go:49: Endzeit: Thu, 26 Sep 2024 14:43:22 CEST | Dauer: 333.9µs
+2024/09/26 14:44:17 server.go:65: Der Server läuft auf Port 8080!
+2024/09/26 14:44:54 middleware.go:42: Startzeit: Thu, 26 Sep 2024 14:44:54 CEST | Methode: GET | URL: /oauth2/callback | RemoteAddr: [::1]:51834
+2024/09/26 14:44:54 auth.go:49: JWT Cookie für Benutzer test gesetzt: jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidGVzdCIsImV4cCI6MTcyNzQ0MTA5NH0.QFAfY1gXFdsKwYWJmDR85XfsW3lDw0XjXln80dvclKY; Path=/; Domain=localhost; Expires=Fri, 27 Sep 2024 12:44:54 GMT; HttpOnly; SameSite=Lax
+2024/09/26 14:44:54 middleware.go:49: Endzeit: Thu, 26 Sep 2024 14:44:54 CEST | Dauer: 914.2µs
+2024/09/26 14:44:54 middleware.go:42: Startzeit: Thu, 26 Sep 2024 14:44:54 CEST | Methode: GET | URL: /app/ | RemoteAddr: [::1]:51834
+2024/09/26 14:44:54 middleware.go:49: Endzeit: Thu, 26 Sep 2024 14:44:54 CEST | Dauer: 871.3µs
+2024/09/26 14:44:54 server.go:3418: http: panic serving [::1]:51834: interface conversion: jwt.Claims is *utils.CustomClaims, not jwt.MapClaims
+goroutine 34 [running]:
+net/http.(*conn).serve.func1()
+	C:/Program Files/Go/src/net/http/server.go:1903 +0xbe
+panic({0x6b9d00?, 0xc00008ab10?})
+	C:/Program Files/Go/src/runtime/panic.go:770 +0x132
+github.com/Finn-dot-de/LernStoffAnwendung/src/middleware.JWTAuthMiddleware.func1({0x796650, 0xc0000a4620}, 0xc0000d46c0)
+	C:/DEV/DEV/DEV/LSA-GO-SERVER/src/middleware/middleware.go:101 +0x4bd
+net/http.HandlerFunc.ServeHTTP(0xc0000d0960?, {0x796650?, 0xc0000a4620?}, 0xc00008c5b0?)
+	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
+github.com/go-chi/chi.(*ChainHandler).ServeHTTP(0x6b2960?, {0x796650?, 0xc0000a4620?}, 0xc0000e31a4?)
+	C:/Users/LY04/go/pkg/mod/github.com/go-chi/chi@v1.5.5/chain.go:31 +0x26
+github.com/go-chi/chi.(*Mux).routeHTTP(0xc000088360, {0x796650, 0xc0000a4620}, 0xc0000d46c0)
+	C:/Users/LY04/go/pkg/mod/github.com/go-chi/chi@v1.5.5/mux.go:436 +0x1f2
+net/http.HandlerFunc.ServeHTTP(0x6defc0?, {0x796650?, 0xc0000a4620?}, 0x7?)
+	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
+github.com/Finn-dot-de/LernStoffAnwendung/src/middleware.NoCacheMiddleware.func1({0x796650, 0xc0000a4620}, 0xc0000d46c0)
+	C:/DEV/DEV/DEV/LSA-GO-SERVER/src/middleware/middleware.go:67 +0x25f
+net/http.HandlerFunc.ServeHTTP(0xc00001c270?, {0x796650?, 0xc0000a4620?}, 0xc000027a68?)
+	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
+github.com/Finn-dot-de/LernStoffAnwendung/src/middleware.LoggerMiddleware.func1({0x796650, 0xc0000a4620}, 0xc0000d46c0)
+	C:/DEV/DEV/DEV/LSA-GO-SERVER/src/middleware/middleware.go:53 +0x250
+net/http.HandlerFunc.ServeHTTP(0x796e78?, {0x796650?, 0xc0000a4620?}, 0x97b4d0?)
+	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
+github.com/go-chi/chi.(*Mux).ServeHTTP(0xc000088360, {0x796650, 0xc0000a4620}, 0xc0000d45a0)
+	C:/Users/LY04/go/pkg/mod/github.com/go-chi/chi@v1.5.5/mux.go:87 +0x2ef
+net/http.serverHandler.ServeHTTP({0xc000182120?}, {0x796650?, 0xc0000a4620?}, 0x6?)
+	C:/Program Files/Go/src/net/http/server.go:3142 +0x8e
+net/http.(*conn).serve(0xc00019a000, {0x796e40, 0xc00008a4e0})
+	C:/Program Files/Go/src/net/http/server.go:2044 +0x5e8
+created by net/http.(*Server).Serve in goroutine 1
+	C:/Program Files/Go/src/net/http/server.go:3290 +0x4b4
+2024/09/26 14:45:21 middleware.go:42: Startzeit: Thu, 26 Sep 2024 14:45:21 CEST | Methode: GET | URL: /api/faecher | RemoteAddr: [::1]:51837
+2024/09/26 14:45:21 middleware.go:49: Endzeit: Thu, 26 Sep 2024 14:45:21 CEST | Dauer: 0s
+2024/09/26 14:45:21 server.go:3418: http: panic serving [::1]:51837: interface conversion: jwt.Claims is *utils.CustomClaims, not jwt.MapClaims
+goroutine 22 [running]:
+net/http.(*conn).serve.func1()
+	C:/Program Files/Go/src/net/http/server.go:1903 +0xbe
+panic({0x6b9d00?, 0xc00008ae40?})
+	C:/Program Files/Go/src/runtime/panic.go:770 +0x132
+github.com/Finn-dot-de/LernStoffAnwendung/src/middleware.JWTAuthMiddleware.func1({0x796650, 0xc0000a49a0}, 0xc0000d4900)
+	C:/DEV/DEV/DEV/LSA-GO-SERVER/src/middleware/middleware.go:101 +0x4bd
+net/http.HandlerFunc.ServeHTTP(0xc0000d0960?, {0x796650?, 0xc0000a49a0?}, 0xc00008c720?)
+	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
+github.com/go-chi/chi.(*ChainHandler).ServeHTTP(0x6b2960?, {0x796650?, 0xc0000a49a0?}, 0xc0000b51c4?)
+	C:/Users/LY04/go/pkg/mod/github.com/go-chi/chi@v1.5.5/chain.go:31 +0x26
+github.com/go-chi/chi.(*Mux).routeHTTP(0xc000088360, {0x796650, 0xc0000a49a0}, 0xc0000d4900)
+	C:/Users/LY04/go/pkg/mod/github.com/go-chi/chi@v1.5.5/mux.go:436 +0x1f2
+net/http.HandlerFunc.ServeHTTP(0x6defc0?, {0x796650?, 0xc0000a49a0?}, 0x7?)
+	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
+github.com/Finn-dot-de/LernStoffAnwendung/src/middleware.NoCacheMiddleware.func1({0x796650, 0xc0000a49a0}, 0xc0000d4900)
+	C:/DEV/DEV/DEV/LSA-GO-SERVER/src/middleware/middleware.go:67 +0x25f
+net/http.HandlerFunc.ServeHTTP(0xc00001c270?, {0x796650?, 0xc0000a49a0?}, 0xc0001a5a68?)
+	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
+github.com/Finn-dot-de/LernStoffAnwendung/src/middleware.LoggerMiddleware.func1({0x796650, 0xc0000a49a0}, 0xc0000d4900)
+	C:/DEV/DEV/DEV/LSA-GO-SERVER/src/middleware/middleware.go:53 +0x250
+net/http.HandlerFunc.ServeHTTP(0x796e78?, {0x796650?, 0xc0000a49a0?}, 0x97b4d0?)
+	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
+github.com/go-chi/chi.(*Mux).ServeHTTP(0xc000088360, {0x796650, 0xc0000a49a0}, 0xc000192360)
+	C:/Users/LY04/go/pkg/mod/github.com/go-chi/chi@v1.5.5/mux.go:87 +0x2ef
+net/http.serverHandler.ServeHTTP({0xc000182210?}, {0x796650?, 0xc0000a49a0?}, 0x6?)
+	C:/Program Files/Go/src/net/http/server.go:3142 +0x8e
+net/http.(*conn).serve(0xc00009ebd0, {0x796e40, 0xc00008a4e0})
+	C:/Program Files/Go/src/net/http/server.go:2044 +0x5e8
+created by net/http.(*Server).Serve in goroutine 1
+	C:/Program Files/Go/src/net/http/server.go:3290 +0x4b4
+2024/09/26 14:45:31 middleware.go:42: Startzeit: Thu, 26 Sep 2024 14:45:31 CEST | Methode: GET | URL: /api/faecher | RemoteAddr: [::1]:51839
+2024/09/26 14:45:31 middleware.go:49: Endzeit: Thu, 26 Sep 2024 14:45:31 CEST | Dauer: 752.6µs
+2024/09/26 14:45:31 server.go:3418: http: panic serving [::1]:51839: interface conversion: jwt.Claims is *utils.CustomClaims, not jwt.MapClaims
+goroutine 10 [running]:
+net/http.(*conn).serve.func1()
+	C:/Program Files/Go/src/net/http/server.go:1903 +0xbe
+panic({0x6b9d00?, 0xc0001824b0?})
+	C:/Program Files/Go/src/runtime/panic.go:770 +0x132
+github.com/Finn-dot-de/LernStoffAnwendung/src/middleware.JWTAuthMiddleware.func1({0x796650, 0xc0001be000}, 0xc0001925a0)
+	C:/DEV/DEV/DEV/LSA-GO-SERVER/src/middleware/middleware.go:101 +0x4bd
+net/http.HandlerFunc.ServeHTTP(0xc0000d0960?, {0x796650?, 0xc0001be000?}, 0xc000186110?)
+	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
+github.com/go-chi/chi.(*ChainHandler).ServeHTTP(0x6b2960?, {0x796650?, 0xc0001be000?}, 0xc0001ac004?)
+	C:/Users/LY04/go/pkg/mod/github.com/go-chi/chi@v1.5.5/chain.go:31 +0x26
+github.com/go-chi/chi.(*Mux).routeHTTP(0xc000088360, {0x796650, 0xc0001be000}, 0xc0001925a0)
+	C:/Users/LY04/go/pkg/mod/github.com/go-chi/chi@v1.5.5/mux.go:436 +0x1f2
+net/http.HandlerFunc.ServeHTTP(0x6defc0?, {0x796650?, 0xc0001be000?}, 0x7?)
+	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
+github.com/Finn-dot-de/LernStoffAnwendung/src/middleware.NoCacheMiddleware.func1({0x796650, 0xc0001be000}, 0xc0001925a0)
+	C:/DEV/DEV/DEV/LSA-GO-SERVER/src/middleware/middleware.go:67 +0x25f
+net/http.HandlerFunc.ServeHTTP(0xc00001c270?, {0x796650?, 0xc0001be000?}, 0xc00006ba68?)
+	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
+github.com/Finn-dot-de/LernStoffAnwendung/src/middleware.LoggerMiddleware.func1({0x796650, 0xc0001be000}, 0xc0001925a0)
+	C:/DEV/DEV/DEV/LSA-GO-SERVER/src/middleware/middleware.go:53 +0x250
+net/http.HandlerFunc.ServeHTTP(0x796e78?, {0x796650?, 0xc0001be000?}, 0x97b4d0?)
+	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
+github.com/go-chi/chi.(*Mux).ServeHTTP(0xc000088360, {0x796650, 0xc0001be000}, 0xc00012e6c0)
+	C:/Users/LY04/go/pkg/mod/github.com/go-chi/chi@v1.5.5/mux.go:87 +0x2ef
+net/http.serverHandler.ServeHTTP({0xc00001d050?}, {0x796650?, 0xc0001be000?}, 0x6?)
+	C:/Program Files/Go/src/net/http/server.go:3142 +0x8e
+net/http.(*conn).serve(0xc000160000, {0x796e40, 0xc00008a4e0})
+	C:/Program Files/Go/src/net/http/server.go:2044 +0x5e8
+created by net/http.(*Server).Serve in goroutine 1
+	C:/Program Files/Go/src/net/http/server.go:3290 +0x4b4
+2024/09/26 14:49:03 server.go:65: Der Server läuft auf Port 8080!
+2024/09/26 14:49:09 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:49:09 CEST | Methode: GET | URL: /app/api/faecher | RemoteAddr: [::1]:51854
+2024/09/26 14:49:09 middleware.go:96: JWT-Token gültig für Benutzer: test
+2024/09/26 14:49:09 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:49:09 CEST | Dauer: 6.35ms
+2024/09/26 14:49:17 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:49:17 CEST | Methode: GET | URL: /oauth2/callback | RemoteAddr: [::1]:51854
+2024/09/26 14:49:17 auth.go:49: JWT Cookie für Benutzer test gesetzt: jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidGVzdCIsImV4cCI6MTcyNzQ0MTM1N30._LTcUxGXZZ40RvDf5btWglt9DQn8we3_N4gC9Aso6Oo; Path=/; Domain=localhost; Expires=Fri, 27 Sep 2024 12:49:17 GMT; HttpOnly; SameSite=Lax
+2024/09/26 14:49:17 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:49:17 CEST | Dauer: 1.0569ms
+2024/09/26 14:49:17 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:49:17 CEST | Methode: GET | URL: /app/ | RemoteAddr: [::1]:51854
+2024/09/26 14:49:17 middleware.go:96: JWT-Token gültig für Benutzer: test
+2024/09/26 14:49:17 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:49:17 CEST | Dauer: 51.049ms
+2024/09/26 14:49:31 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:49:31 CEST | Methode: GET | URL: /api/fragen/ITS | RemoteAddr: [::1]:51854
+2024/09/26 14:49:31 middleware.go:96: JWT-Token gültig für Benutzer: test
+2024/09/26 14:49:31 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:49:31 CEST | Dauer: 966µs
+2024/09/26 14:49:44 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:49:44 CEST | Methode: GET | URL: /app/api/fragen/ITS | RemoteAddr: [::1]:51854
+2024/09/26 14:49:44 middleware.go:96: JWT-Token gültig für Benutzer: test
+2024/09/26 14:49:44 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:49:44 CEST | Dauer: 11.6841ms
+2024/09/26 14:50:22 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:50:22 CEST | Methode: GET | URL: /app/api/get/user | RemoteAddr: [::1]:51854
+2024/09/26 14:50:22 middleware.go:96: JWT-Token gültig für Benutzer: test
+2024/09/26 14:50:22 get_routes.go:121: Fehler: Kein angemeldeter Benutzer
+2024/09/26 14:50:22 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:50:22 CEST | Dauer: 646.1µs
+2024/09/26 14:50:56 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:50:56 CEST | Methode: GET | URL: /oauth2/callback | RemoteAddr: [::1]:51854
+2024/09/26 14:50:56 auth.go:49: JWT Cookie für Benutzer LY04 gesetzt: jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiTFkwNCIsImV4cCI6MTcyNzQ0MTQ1Nn0.sxOb_Zd662_MM1H4a5wxsZ4WBWkj2PLBdXT54U7d-vo; Path=/; Domain=localhost; Expires=Fri, 27 Sep 2024 12:50:56 GMT; HttpOnly; SameSite=Lax
+2024/09/26 14:50:56 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:50:56 CEST | Dauer: 438µs
+2024/09/26 14:50:56 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:50:56 CEST | Methode: GET | URL: /app/ | RemoteAddr: [::1]:51854
+2024/09/26 14:50:56 middleware.go:96: JWT-Token gültig für Benutzer: LY04
+2024/09/26 14:50:56 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:50:56 CEST | Dauer: 3.8428ms
+2024/09/26 14:51:01 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:51:01 CEST | Methode: GET | URL: /app/api/get/user | RemoteAddr: [::1]:51854
+2024/09/26 14:51:01 middleware.go:96: JWT-Token gültig für Benutzer: LY04
+2024/09/26 14:51:01 get_routes.go:121: Fehler: Kein angemeldeter Benutzer
+2024/09/26 14:51:01 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:51:01 CEST | Dauer: 612.8µs
+2024/09/26 14:51:26 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:51:26 CEST | Methode: GET | URL: /app/api/get/user | RemoteAddr: [::1]:51854
+2024/09/26 14:51:26 middleware.go:96: JWT-Token gültig für Benutzer: LY04
+2024/09/26 14:51:26 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:51:26 CEST | Dauer: 5.0405ms
+2024/09/26 14:51:40 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:51:40 CEST | Methode: GET | URL: /app/api/get/user | RemoteAddr: [::1]:51854
+2024/09/26 14:51:40 middleware.go:96: JWT-Token gültig für Benutzer: LY04
+2024/09/26 14:51:40 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:51:40 CEST | Dauer: 1.1571ms
+2024/09/26 14:52:01 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:52:01 CEST | Methode: GET | URL: /oauth2/callback | RemoteAddr: [::1]:51854
+2024/09/26 14:52:01 auth.go:49: JWT Cookie für Benutzer KN40 gesetzt: jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiS040MCIsImV4cCI6MTcyNzQ0MTUyMX0.oypT2D-EMGK5jKtKxO63z_JAGdgcpWwApSoha8Lxzmg; Path=/; Domain=localhost; Expires=Fri, 27 Sep 2024 12:52:01 GMT; HttpOnly; SameSite=Lax
+2024/09/26 14:52:01 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:52:01 CEST | Dauer: 950.7µs
+2024/09/26 14:52:01 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:52:01 CEST | Methode: GET | URL: /app/ | RemoteAddr: [::1]:51854
+2024/09/26 14:52:01 middleware.go:96: JWT-Token gültig für Benutzer: KN40
+2024/09/26 14:52:01 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:52:01 CEST | Dauer: 3.8414ms
+2024/09/26 14:52:06 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:52:06 CEST | Methode: GET | URL: /app/api/get/user | RemoteAddr: [::1]:51854
+2024/09/26 14:52:06 middleware.go:96: JWT-Token gültig für Benutzer: KN40
+2024/09/26 14:52:06 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:52:06 CEST | Dauer: 1.4956ms

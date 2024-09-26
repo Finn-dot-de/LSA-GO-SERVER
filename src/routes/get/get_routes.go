@@ -5,11 +5,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/Finn-dot-de/LernStoffAnwendung/src/handler/site_funcs"
+	"github.com/Finn-dot-de/LernStoffAnwendung/src/handler/user_func"
 	"log"
 	"net/http"
 	"strconv"
 
-	"github.com/Finn-dot-de/LernStoffAnwendung/src/sql/get"
 	"github.com/go-chi/chi"
 )
 
@@ -17,110 +18,106 @@ import (
 func DefineGetRoutes(r *chi.Mux, db *sql.DB) {
 	// Fachbezogene Fragen abrufen
 	r.Get("/app/api/fragen/{name}", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
 		fachName := chi.URLParam(r, "name")
 
-		fach, err := get.GetFragenFromDBNachFach(db, fachName)
+		fach, err := site_funcs.GetFragenFromDBNachFach(db, fachName)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			handleError(w, fmt.Errorf("Fehler beim Abrufen der Fragen für Fach %s: %v", fachName, err), http.StatusInternalServerError)
 			return
 		}
 
-		w.Header().Set("Content-Type", "application/json")
-		err = json.NewEncoder(w).Encode(fach)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
+		sendJSONResponse(w, fach)
 	})
 
 	// Alle Fächer abrufen
 	r.Get("/app/api/faecher", func(w http.ResponseWriter, r *http.Request) {
-		faecher, err := get.GetFeacherFromDB(db)
+		w.Header().Set("Content-Type", "application/json")
+
+		faecher, err := site_funcs.GetFeacherFromDB(db)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			handleError(w, fmt.Errorf("Fehler beim Abrufen der Fächer: %v", err), http.StatusInternalServerError)
 			return
 		}
 
-		w.Header().Set("Content-Type", "application/json")
-		err = json.NewEncoder(w).Encode(faecher)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
+		sendJSONResponse(w, faecher)
 	})
 
 	// Route zum Abrufen des Links
 	r.Get("/logout/link", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
 		link := struct {
 			URL string `json:"url"`
 		}{
-			URL: "/oauth2/sign_out?rd=https%3A%2F%2Fgithub.com%2Flogout", // Dynamisch generierter oder statischer Link
+			URL: "/oauth2/sign_out?rd=https%3A%2F%2Fgithub.com%2Flogout",
 		}
-		w.Header().Set("Content-Type", "application/json")
-		err := json.NewEncoder(w).Encode(link)
-		if err != nil {
-			return
-		}
+		sendJSONResponse(w, link)
 	})
 
 	// API-Endpunkt für das Abrufen einer Datei basierend auf ihrer ID
 	r.Get("/app/api/getlernsite", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
 		idStr := r.URL.Query().Get("id")
 		if idStr == "" {
-			http.Error(w, "ID fehlt", http.StatusBadRequest)
+			handleError(w, errors.New("ID fehlt"), http.StatusBadRequest)
 			return
 		}
 
 		id, err := strconv.Atoi(idStr)
 		if err != nil {
-			http.Error(w, "Ungültige ID", http.StatusBadRequest)
+			handleError(w, errors.New("Ungültige ID"), http.StatusBadRequest)
 			return
 		}
 
-		// Datei aus der Datenbank abrufen
-		lernseite, err := get.GetLernseiteByID(db, id)
+		lernseite, err := site_funcs.GetLernseiteByID(db, id)
 		if err != nil {
 			if errors.Is(err, sql.ErrNoRows) {
-				// Keine Seite gefunden, neue Seite erstellen
-				http.Error(w, "Seite nicht gefunden, bitte eine neue erstellen", http.StatusNotFound)
+				handleError(w, errors.New("Seite nicht gefunden, bitte eine neue erstellen"), http.StatusNotFound)
 				return
 			}
-			http.Error(w, fmt.Sprintf("Fehler beim Abrufen der Datei: %v", err), http.StatusInternalServerError)
+			handleError(w, fmt.Errorf("Fehler beim Abrufen der Datei: %v", err), http.StatusInternalServerError)
 			return
 		}
 
-		// Dateiinformationen als JSON zurückgeben
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(lernseite)
+		sendJSONResponse(w, lernseite)
 	})
 
+	// Benutzerinformationen abrufen
 	r.Get("/app/api/get/user", func(w http.ResponseWriter, r *http.Request) {
-		// Benutzer-Kürzel aus dem Header auslesen
-		userkuerzel := r.Header.Get("X-Forwarded-User")
+		w.Header().Set("Content-Type", "application/json")
 
-		// Prüfen, ob der Benutzer-Kürzel leer ist
+		userkuerzel := r.Header.Get("X-Forwarded-User")
 		if userkuerzel == "" {
-			http.Error(w, "Kein angemeldeter Benutzer", http.StatusBadRequest)
+			handleError(w, errors.New("Kein angemeldeter Benutzer"), http.StatusBadRequest)
 			return
 		}
 
-		// Benutzerinformationen aus der Datenbank abrufen
-		userdata, err := get.GetUserFromDB(userkuerzel, db)
-		log.Println(err)
+		userdata, err := userhandler.GetUserFromDB(userkuerzel, db)
 		if err != nil {
 			if err.Error() == "Benutzername nicht gefunden" {
-				http.Error(w, "Benutzer nicht gefunden", http.StatusNotFound)
+				handleError(w, errors.New("Benutzer nicht gefunden"), http.StatusNotFound)
 			} else {
-				http.Error(w, "Interner Serverfehler", http.StatusInternalServerError)
+				handleError(w, errors.New("Interner Serverfehler"), http.StatusInternalServerError)
 			}
 			return
 		}
 
-		// Benutzerinformationen als JSON zurückgeben
-		w.Header().Set("Content-Type", "application/json")
-		if err := json.NewEncoder(w).Encode(userdata); err != nil {
-			http.Error(w, "Fehler beim Kodieren der Antwort", http.StatusInternalServerError)
-		}
+		sendJSONResponse(w, userdata)
 	})
+}
 
+// sendJSONResponse sendet die gegebene Datenstruktur als JSON-Antwort
+func sendJSONResponse(w http.ResponseWriter, data interface{}) {
+	if err := json.NewEncoder(w).Encode(data); err != nil {
+		log.Printf("Fehler beim Kodieren der JSON-Antwort: %v", err)
+		http.Error(w, "Fehler beim Kodieren der Antwort", http.StatusInternalServerError)
+	}
+}
+
+// handleError behandelt Fehler, protokolliert sie und sendet eine HTTP-Fehlermeldung zurück
+func handleError(w http.ResponseWriter, err error, statusCode int) {
+	log.Printf("Fehler: %v", err)
+	http.Error(w, err.Error(), statusCode)
 }
