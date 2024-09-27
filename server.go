@@ -3,9 +3,9 @@ package main
 import (
 	"database/sql"
 	"github.com/Finn-dot-de/LernStoffAnwendung/src/auth"
+	"github.com/Finn-dot-de/LernStoffAnwendung/src/handler/get"
+	"github.com/Finn-dot-de/LernStoffAnwendung/src/handler/post"
 	"github.com/Finn-dot-de/LernStoffAnwendung/src/middleware"
-	"github.com/Finn-dot-de/LernStoffAnwendung/src/routes/get"
-	"github.com/Finn-dot-de/LernStoffAnwendung/src/routes/post"
 	"github.com/Finn-dot-de/LernStoffAnwendung/src/sql/connection"
 	"github.com/go-chi/chi"
 	"log"
@@ -42,7 +42,7 @@ func main() {
 	r.Use(middleware.NoCacheMiddleware)
 
 	// Route für den OAuth2-Callback (diese Route setzt den JWT-Cookie)
-	r.Get("/oauth2/callback", auth.OAuth2CallbackHandler) // Diese Funktion setzt den JWT-Cookie
+	r.Get("/auth", auth.OAuth2CallbackHandler) // Diese Funktion setzt den JWT-Cookie
 
 	// Gruppe der Routen, auf die die JWT-Middleware angewendet wird
 	r.Group(func(r chi.Router) {
@@ -53,7 +53,7 @@ func main() {
 		post.DefinePostRoutes(r.(*chi.Mux), db)
 
 		// Statische Dateien servieren (z. B. für Angular-Anwendung)
-		fs := http.FileServer(http.Dir("C:\\DEV\\DEV\\DEV\\LS-ANG\\project"))
+		fs := http.FileServer(http.Dir("C:\\DEV\\LS-ANG\\project"))
 		r.Handle("/*", http.StripPrefix("/app/", fs))
 	})
 

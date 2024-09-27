@@ -1,6 +1,6 @@
 package structs
 
-type SaveRequest struct {
+type SavedRequestFile struct {
 	ID         int    `json:"id"`         // Seite ID (0 für neue Seite)
 	Titel      string `json:"titel"`      // Titel der Seite
 	DateiPfad  string `json:"dateiPfad"`  // Pfad zur Datei
@@ -10,7 +10,7 @@ type SaveRequest struct {
 type Lernseite struct {
 	ID               int
 	Titel            string
-	DateiPfad        string
+	Text             string
 	BenutzerID       int
 	Erstellungsdatum string
 }

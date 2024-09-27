@@ -1,165 +1,191 @@
-2024/09/26 14:27:45 server.go:65: Der Server läuft auf Port 8080!
-2024/09/26 14:28:01 middleware.go:42: Startzeit: Thu, 26 Sep 2024 14:28:01 CEST | Methode: GET | URL: / | RemoteAddr: [::1]:53669
-2024/09/26 14:28:01 auth.go:13: Hier >>>>>>>>>>>>> 
-2024/09/26 14:28:01 auth.go:15: Fehler: Kein Benutzername im Header gefunden
-2024/09/26 14:28:01 middleware.go:49: Endzeit: Thu, 26 Sep 2024 14:28:01 CEST | Dauer: 498.1µs
-2024/09/26 14:28:01 middleware.go:42: Startzeit: Thu, 26 Sep 2024 14:28:01 CEST | Methode: GET | URL: /favicon.ico | RemoteAddr: [::1]:53669
-2024/09/26 14:28:01 middleware.go:79: JWT Cookie nicht gefunden: http: named cookie not present
-2024/09/26 14:28:01 middleware.go:49: Endzeit: Thu, 26 Sep 2024 14:28:01 CEST | Dauer: 1.0438ms
-2024/09/26 14:30:50 server.go:65: Der Server läuft auf Port 8080!
-2024/09/26 14:33:50 server.go:65: Der Server läuft auf Port 8080!
-2024/09/26 14:35:43 server.go:65: Der Server läuft auf Port 8080!
-2024/09/26 14:43:22 middleware.go:42: Startzeit: Thu, 26 Sep 2024 14:43:22 CEST | Methode: GET | URL: /oauth2/callback | RemoteAddr: [::1]:53042
-2024/09/26 14:43:22 middleware.go:79: JWT Cookie nicht gefunden: http: named cookie not present
-2024/09/26 14:43:22 middleware.go:49: Endzeit: Thu, 26 Sep 2024 14:43:22 CEST | Dauer: 333.9µs
-2024/09/26 14:44:17 server.go:65: Der Server läuft auf Port 8080!
-2024/09/26 14:44:54 middleware.go:42: Startzeit: Thu, 26 Sep 2024 14:44:54 CEST | Methode: GET | URL: /oauth2/callback | RemoteAddr: [::1]:51834
-2024/09/26 14:44:54 auth.go:49: JWT Cookie für Benutzer test gesetzt: jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidGVzdCIsImV4cCI6MTcyNzQ0MTA5NH0.QFAfY1gXFdsKwYWJmDR85XfsW3lDw0XjXln80dvclKY; Path=/; Domain=localhost; Expires=Fri, 27 Sep 2024 12:44:54 GMT; HttpOnly; SameSite=Lax
-2024/09/26 14:44:54 middleware.go:49: Endzeit: Thu, 26 Sep 2024 14:44:54 CEST | Dauer: 914.2µs
-2024/09/26 14:44:54 middleware.go:42: Startzeit: Thu, 26 Sep 2024 14:44:54 CEST | Methode: GET | URL: /app/ | RemoteAddr: [::1]:51834
-2024/09/26 14:44:54 middleware.go:49: Endzeit: Thu, 26 Sep 2024 14:44:54 CEST | Dauer: 871.3µs
-2024/09/26 14:44:54 server.go:3418: http: panic serving [::1]:51834: interface conversion: jwt.Claims is *utils.CustomClaims, not jwt.MapClaims
-goroutine 34 [running]:
-net/http.(*conn).serve.func1()
-	C:/Program Files/Go/src/net/http/server.go:1903 +0xbe
-panic({0x6b9d00?, 0xc00008ab10?})
-	C:/Program Files/Go/src/runtime/panic.go:770 +0x132
-github.com/Finn-dot-de/LernStoffAnwendung/src/middleware.JWTAuthMiddleware.func1({0x796650, 0xc0000a4620}, 0xc0000d46c0)
-	C:/DEV/DEV/DEV/LSA-GO-SERVER/src/middleware/middleware.go:101 +0x4bd
-net/http.HandlerFunc.ServeHTTP(0xc0000d0960?, {0x796650?, 0xc0000a4620?}, 0xc00008c5b0?)
-	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
-github.com/go-chi/chi.(*ChainHandler).ServeHTTP(0x6b2960?, {0x796650?, 0xc0000a4620?}, 0xc0000e31a4?)
-	C:/Users/LY04/go/pkg/mod/github.com/go-chi/chi@v1.5.5/chain.go:31 +0x26
-github.com/go-chi/chi.(*Mux).routeHTTP(0xc000088360, {0x796650, 0xc0000a4620}, 0xc0000d46c0)
-	C:/Users/LY04/go/pkg/mod/github.com/go-chi/chi@v1.5.5/mux.go:436 +0x1f2
-net/http.HandlerFunc.ServeHTTP(0x6defc0?, {0x796650?, 0xc0000a4620?}, 0x7?)
-	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
-github.com/Finn-dot-de/LernStoffAnwendung/src/middleware.NoCacheMiddleware.func1({0x796650, 0xc0000a4620}, 0xc0000d46c0)
-	C:/DEV/DEV/DEV/LSA-GO-SERVER/src/middleware/middleware.go:67 +0x25f
-net/http.HandlerFunc.ServeHTTP(0xc00001c270?, {0x796650?, 0xc0000a4620?}, 0xc000027a68?)
-	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
-github.com/Finn-dot-de/LernStoffAnwendung/src/middleware.LoggerMiddleware.func1({0x796650, 0xc0000a4620}, 0xc0000d46c0)
-	C:/DEV/DEV/DEV/LSA-GO-SERVER/src/middleware/middleware.go:53 +0x250
-net/http.HandlerFunc.ServeHTTP(0x796e78?, {0x796650?, 0xc0000a4620?}, 0x97b4d0?)
-	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
-github.com/go-chi/chi.(*Mux).ServeHTTP(0xc000088360, {0x796650, 0xc0000a4620}, 0xc0000d45a0)
-	C:/Users/LY04/go/pkg/mod/github.com/go-chi/chi@v1.5.5/mux.go:87 +0x2ef
-net/http.serverHandler.ServeHTTP({0xc000182120?}, {0x796650?, 0xc0000a4620?}, 0x6?)
-	C:/Program Files/Go/src/net/http/server.go:3142 +0x8e
-net/http.(*conn).serve(0xc00019a000, {0x796e40, 0xc00008a4e0})
-	C:/Program Files/Go/src/net/http/server.go:2044 +0x5e8
-created by net/http.(*Server).Serve in goroutine 1
-	C:/Program Files/Go/src/net/http/server.go:3290 +0x4b4
-2024/09/26 14:45:21 middleware.go:42: Startzeit: Thu, 26 Sep 2024 14:45:21 CEST | Methode: GET | URL: /api/faecher | RemoteAddr: [::1]:51837
-2024/09/26 14:45:21 middleware.go:49: Endzeit: Thu, 26 Sep 2024 14:45:21 CEST | Dauer: 0s
-2024/09/26 14:45:21 server.go:3418: http: panic serving [::1]:51837: interface conversion: jwt.Claims is *utils.CustomClaims, not jwt.MapClaims
-goroutine 22 [running]:
-net/http.(*conn).serve.func1()
-	C:/Program Files/Go/src/net/http/server.go:1903 +0xbe
-panic({0x6b9d00?, 0xc00008ae40?})
-	C:/Program Files/Go/src/runtime/panic.go:770 +0x132
-github.com/Finn-dot-de/LernStoffAnwendung/src/middleware.JWTAuthMiddleware.func1({0x796650, 0xc0000a49a0}, 0xc0000d4900)
-	C:/DEV/DEV/DEV/LSA-GO-SERVER/src/middleware/middleware.go:101 +0x4bd
-net/http.HandlerFunc.ServeHTTP(0xc0000d0960?, {0x796650?, 0xc0000a49a0?}, 0xc00008c720?)
-	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
-github.com/go-chi/chi.(*ChainHandler).ServeHTTP(0x6b2960?, {0x796650?, 0xc0000a49a0?}, 0xc0000b51c4?)
-	C:/Users/LY04/go/pkg/mod/github.com/go-chi/chi@v1.5.5/chain.go:31 +0x26
-github.com/go-chi/chi.(*Mux).routeHTTP(0xc000088360, {0x796650, 0xc0000a49a0}, 0xc0000d4900)
-	C:/Users/LY04/go/pkg/mod/github.com/go-chi/chi@v1.5.5/mux.go:436 +0x1f2
-net/http.HandlerFunc.ServeHTTP(0x6defc0?, {0x796650?, 0xc0000a49a0?}, 0x7?)
-	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
-github.com/Finn-dot-de/LernStoffAnwendung/src/middleware.NoCacheMiddleware.func1({0x796650, 0xc0000a49a0}, 0xc0000d4900)
-	C:/DEV/DEV/DEV/LSA-GO-SERVER/src/middleware/middleware.go:67 +0x25f
-net/http.HandlerFunc.ServeHTTP(0xc00001c270?, {0x796650?, 0xc0000a49a0?}, 0xc0001a5a68?)
-	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
-github.com/Finn-dot-de/LernStoffAnwendung/src/middleware.LoggerMiddleware.func1({0x796650, 0xc0000a49a0}, 0xc0000d4900)
-	C:/DEV/DEV/DEV/LSA-GO-SERVER/src/middleware/middleware.go:53 +0x250
-net/http.HandlerFunc.ServeHTTP(0x796e78?, {0x796650?, 0xc0000a49a0?}, 0x97b4d0?)
-	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
-github.com/go-chi/chi.(*Mux).ServeHTTP(0xc000088360, {0x796650, 0xc0000a49a0}, 0xc000192360)
-	C:/Users/LY04/go/pkg/mod/github.com/go-chi/chi@v1.5.5/mux.go:87 +0x2ef
-net/http.serverHandler.ServeHTTP({0xc000182210?}, {0x796650?, 0xc0000a49a0?}, 0x6?)
-	C:/Program Files/Go/src/net/http/server.go:3142 +0x8e
-net/http.(*conn).serve(0xc00009ebd0, {0x796e40, 0xc00008a4e0})
-	C:/Program Files/Go/src/net/http/server.go:2044 +0x5e8
-created by net/http.(*Server).Serve in goroutine 1
-	C:/Program Files/Go/src/net/http/server.go:3290 +0x4b4
-2024/09/26 14:45:31 middleware.go:42: Startzeit: Thu, 26 Sep 2024 14:45:31 CEST | Methode: GET | URL: /api/faecher | RemoteAddr: [::1]:51839
-2024/09/26 14:45:31 middleware.go:49: Endzeit: Thu, 26 Sep 2024 14:45:31 CEST | Dauer: 752.6µs
-2024/09/26 14:45:31 server.go:3418: http: panic serving [::1]:51839: interface conversion: jwt.Claims is *utils.CustomClaims, not jwt.MapClaims
-goroutine 10 [running]:
-net/http.(*conn).serve.func1()
-	C:/Program Files/Go/src/net/http/server.go:1903 +0xbe
-panic({0x6b9d00?, 0xc0001824b0?})
-	C:/Program Files/Go/src/runtime/panic.go:770 +0x132
-github.com/Finn-dot-de/LernStoffAnwendung/src/middleware.JWTAuthMiddleware.func1({0x796650, 0xc0001be000}, 0xc0001925a0)
-	C:/DEV/DEV/DEV/LSA-GO-SERVER/src/middleware/middleware.go:101 +0x4bd
-net/http.HandlerFunc.ServeHTTP(0xc0000d0960?, {0x796650?, 0xc0001be000?}, 0xc000186110?)
-	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
-github.com/go-chi/chi.(*ChainHandler).ServeHTTP(0x6b2960?, {0x796650?, 0xc0001be000?}, 0xc0001ac004?)
-	C:/Users/LY04/go/pkg/mod/github.com/go-chi/chi@v1.5.5/chain.go:31 +0x26
-github.com/go-chi/chi.(*Mux).routeHTTP(0xc000088360, {0x796650, 0xc0001be000}, 0xc0001925a0)
-	C:/Users/LY04/go/pkg/mod/github.com/go-chi/chi@v1.5.5/mux.go:436 +0x1f2
-net/http.HandlerFunc.ServeHTTP(0x6defc0?, {0x796650?, 0xc0001be000?}, 0x7?)
-	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
-github.com/Finn-dot-de/LernStoffAnwendung/src/middleware.NoCacheMiddleware.func1({0x796650, 0xc0001be000}, 0xc0001925a0)
-	C:/DEV/DEV/DEV/LSA-GO-SERVER/src/middleware/middleware.go:67 +0x25f
-net/http.HandlerFunc.ServeHTTP(0xc00001c270?, {0x796650?, 0xc0001be000?}, 0xc00006ba68?)
-	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
-github.com/Finn-dot-de/LernStoffAnwendung/src/middleware.LoggerMiddleware.func1({0x796650, 0xc0001be000}, 0xc0001925a0)
-	C:/DEV/DEV/DEV/LSA-GO-SERVER/src/middleware/middleware.go:53 +0x250
-net/http.HandlerFunc.ServeHTTP(0x796e78?, {0x796650?, 0xc0001be000?}, 0x97b4d0?)
-	C:/Program Files/Go/src/net/http/server.go:2171 +0x29
-github.com/go-chi/chi.(*Mux).ServeHTTP(0xc000088360, {0x796650, 0xc0001be000}, 0xc00012e6c0)
-	C:/Users/LY04/go/pkg/mod/github.com/go-chi/chi@v1.5.5/mux.go:87 +0x2ef
-net/http.serverHandler.ServeHTTP({0xc00001d050?}, {0x796650?, 0xc0001be000?}, 0x6?)
-	C:/Program Files/Go/src/net/http/server.go:3142 +0x8e
-net/http.(*conn).serve(0xc000160000, {0x796e40, 0xc00008a4e0})
-	C:/Program Files/Go/src/net/http/server.go:2044 +0x5e8
-created by net/http.(*Server).Serve in goroutine 1
-	C:/Program Files/Go/src/net/http/server.go:3290 +0x4b4
-2024/09/26 14:49:03 server.go:65: Der Server läuft auf Port 8080!
-2024/09/26 14:49:09 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:49:09 CEST | Methode: GET | URL: /app/api/faecher | RemoteAddr: [::1]:51854
-2024/09/26 14:49:09 middleware.go:96: JWT-Token gültig für Benutzer: test
-2024/09/26 14:49:09 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:49:09 CEST | Dauer: 6.35ms
-2024/09/26 14:49:17 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:49:17 CEST | Methode: GET | URL: /oauth2/callback | RemoteAddr: [::1]:51854
-2024/09/26 14:49:17 auth.go:49: JWT Cookie für Benutzer test gesetzt: jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidGVzdCIsImV4cCI6MTcyNzQ0MTM1N30._LTcUxGXZZ40RvDf5btWglt9DQn8we3_N4gC9Aso6Oo; Path=/; Domain=localhost; Expires=Fri, 27 Sep 2024 12:49:17 GMT; HttpOnly; SameSite=Lax
-2024/09/26 14:49:17 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:49:17 CEST | Dauer: 1.0569ms
-2024/09/26 14:49:17 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:49:17 CEST | Methode: GET | URL: /app/ | RemoteAddr: [::1]:51854
-2024/09/26 14:49:17 middleware.go:96: JWT-Token gültig für Benutzer: test
-2024/09/26 14:49:17 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:49:17 CEST | Dauer: 51.049ms
-2024/09/26 14:49:31 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:49:31 CEST | Methode: GET | URL: /api/fragen/ITS | RemoteAddr: [::1]:51854
-2024/09/26 14:49:31 middleware.go:96: JWT-Token gültig für Benutzer: test
-2024/09/26 14:49:31 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:49:31 CEST | Dauer: 966µs
-2024/09/26 14:49:44 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:49:44 CEST | Methode: GET | URL: /app/api/fragen/ITS | RemoteAddr: [::1]:51854
-2024/09/26 14:49:44 middleware.go:96: JWT-Token gültig für Benutzer: test
-2024/09/26 14:49:44 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:49:44 CEST | Dauer: 11.6841ms
-2024/09/26 14:50:22 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:50:22 CEST | Methode: GET | URL: /app/api/get/user | RemoteAddr: [::1]:51854
-2024/09/26 14:50:22 middleware.go:96: JWT-Token gültig für Benutzer: test
-2024/09/26 14:50:22 get_routes.go:121: Fehler: Kein angemeldeter Benutzer
-2024/09/26 14:50:22 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:50:22 CEST | Dauer: 646.1µs
-2024/09/26 14:50:56 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:50:56 CEST | Methode: GET | URL: /oauth2/callback | RemoteAddr: [::1]:51854
-2024/09/26 14:50:56 auth.go:49: JWT Cookie für Benutzer LY04 gesetzt: jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiTFkwNCIsImV4cCI6MTcyNzQ0MTQ1Nn0.sxOb_Zd662_MM1H4a5wxsZ4WBWkj2PLBdXT54U7d-vo; Path=/; Domain=localhost; Expires=Fri, 27 Sep 2024 12:50:56 GMT; HttpOnly; SameSite=Lax
-2024/09/26 14:50:56 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:50:56 CEST | Dauer: 438µs
-2024/09/26 14:50:56 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:50:56 CEST | Methode: GET | URL: /app/ | RemoteAddr: [::1]:51854
-2024/09/26 14:50:56 middleware.go:96: JWT-Token gültig für Benutzer: LY04
-2024/09/26 14:50:56 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:50:56 CEST | Dauer: 3.8428ms
-2024/09/26 14:51:01 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:51:01 CEST | Methode: GET | URL: /app/api/get/user | RemoteAddr: [::1]:51854
-2024/09/26 14:51:01 middleware.go:96: JWT-Token gültig für Benutzer: LY04
-2024/09/26 14:51:01 get_routes.go:121: Fehler: Kein angemeldeter Benutzer
-2024/09/26 14:51:01 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:51:01 CEST | Dauer: 612.8µs
-2024/09/26 14:51:26 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:51:26 CEST | Methode: GET | URL: /app/api/get/user | RemoteAddr: [::1]:51854
-2024/09/26 14:51:26 middleware.go:96: JWT-Token gültig für Benutzer: LY04
-2024/09/26 14:51:26 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:51:26 CEST | Dauer: 5.0405ms
-2024/09/26 14:51:40 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:51:40 CEST | Methode: GET | URL: /app/api/get/user | RemoteAddr: [::1]:51854
-2024/09/26 14:51:40 middleware.go:96: JWT-Token gültig für Benutzer: LY04
-2024/09/26 14:51:40 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:51:40 CEST | Dauer: 1.1571ms
-2024/09/26 14:52:01 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:52:01 CEST | Methode: GET | URL: /oauth2/callback | RemoteAddr: [::1]:51854
-2024/09/26 14:52:01 auth.go:49: JWT Cookie für Benutzer KN40 gesetzt: jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiS040MCIsImV4cCI6MTcyNzQ0MTUyMX0.oypT2D-EMGK5jKtKxO63z_JAGdgcpWwApSoha8Lxzmg; Path=/; Domain=localhost; Expires=Fri, 27 Sep 2024 12:52:01 GMT; HttpOnly; SameSite=Lax
-2024/09/26 14:52:01 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:52:01 CEST | Dauer: 950.7µs
-2024/09/26 14:52:01 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:52:01 CEST | Methode: GET | URL: /app/ | RemoteAddr: [::1]:51854
-2024/09/26 14:52:01 middleware.go:96: JWT-Token gültig für Benutzer: KN40
-2024/09/26 14:52:01 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:52:01 CEST | Dauer: 3.8414ms
-2024/09/26 14:52:06 middleware.go:41: Startzeit: Thu, 26 Sep 2024 14:52:06 CEST | Methode: GET | URL: /app/api/get/user | RemoteAddr: [::1]:51854
-2024/09/26 14:52:06 middleware.go:96: JWT-Token gültig für Benutzer: KN40
-2024/09/26 14:52:06 middleware.go:48: Endzeit: Thu, 26 Sep 2024 14:52:06 CEST | Dauer: 1.4956ms
+2024/09/27 23:08:20 server.go:65: Der Server läuft auf Port 8080!
+2024/09/27 23:09:13 middleware.go:62: Startzeit: Fri, 27 Sep 2024 23:09:13 CEST | Methode: GET | URL: /app/styles.906baa7422eb9b03.css | RemoteAddr: [::1]:60941
+2024/09/27 23:09:13 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/27 23:09:13 middleware.go:74: Endzeit: Fri, 27 Sep 2024 23:09:13 CEST | Dauer: 33.6969ms | Statuscode: 200 | Antwortgröße: 24405 Bytes
+2024/09/28 00:11:01 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:11:01 CEST | Methode: GET | URL: /app/ | RemoteAddr: [::1]:50184
+2024/09/28 00:11:01 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:11:01 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:11:01 CEST | Dauer: 535.9µs | Statuscode: 200 | Antwortgröße: 5027 Bytes
+2024/09/28 00:11:01 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:11:01 CEST | Methode: GET | URL: /app/runtime.4a6411870e442441.js | RemoteAddr: [::1]:50184
+2024/09/28 00:11:01 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:11:01 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:11:01 CEST | Methode: GET | URL: /app/polyfills.0c93755936eaf698.js | RemoteAddr: [::1]:50185
+2024/09/28 00:11:01 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:11:01 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:11:01 CEST | Dauer: 0s | Statuscode: 200 | Antwortgröße: 2755 Bytes
+2024/09/28 00:11:01 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:11:01 CEST | Dauer: 532.1µs | Statuscode: 200 | Antwortgröße: 34796 Bytes
+2024/09/28 00:11:01 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:11:01 CEST | Methode: GET | URL: /app/main.4c79fde9a2b5240b.js | RemoteAddr: [::1]:50189
+2024/09/28 00:11:01 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:11:01 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:11:01 CEST | Methode: GET | URL: /app/styles.906baa7422eb9b03.css | RemoteAddr: [::1]:50190
+2024/09/28 00:11:01 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:11:01 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:11:01 CEST | Dauer: 538.1µs | Statuscode: 200 | Antwortgröße: 24405 Bytes
+2024/09/28 00:11:01 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:11:01 CEST | Dauer: 538.1µs | Statuscode: 200 | Antwortgröße: 311993 Bytes
+2024/09/28 00:11:01 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:11:01 CEST | Methode: GET | URL: /app/styles.906baa7422eb9b03.css | RemoteAddr: [::1]:50189
+2024/09/28 00:11:01 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:11:01 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:11:01 CEST | Dauer: 582.1µs | Statuscode: 200 | Antwortgröße: 24405 Bytes
+2024/09/28 00:11:01 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:11:01 CEST | Methode: GET | URL: /app/api/faecher | RemoteAddr: [::1]:50189
+2024/09/28 00:11:01 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:11:01 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:11:01 CEST | Methode: GET | URL: /logout/link | RemoteAddr: [::1]:50190
+2024/09/28 00:11:01 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:11:01 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:11:01 CEST | Dauer: 0s | Statuscode: 200 | Antwortgröße: 64 Bytes
+2024/09/28 00:11:01 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:11:01 CEST | Dauer: 818.9µs | Statuscode: 200 | Antwortgröße: 119 Bytes
+2024/09/28 00:11:01 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:11:01 CEST | Methode: GET | URL: /app/assets/img/MainLogo.ico | RemoteAddr: [::1]:50189
+2024/09/28 00:11:01 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:11:01 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:11:01 CEST | Dauer: 647.5µs | Statuscode: 200 | Antwortgröße: 96422 Bytes
+2024/09/28 00:11:01 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:11:01 CEST | Methode: GET | URL: /app/assets/img/logout_btn.svg | RemoteAddr: [::1]:50190
+2024/09/28 00:11:01 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:11:01 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:11:01 CEST | Dauer: 911µs | Statuscode: 200 | Antwortgröße: 277 Bytes
+2024/09/28 00:11:01 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:11:01 CEST | Methode: GET | URL: /app/assets/img/MainLogo.ico | RemoteAddr: [::1]:50190
+2024/09/28 00:11:01 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:11:01 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:11:01 CEST | Dauer: 398.1µs | Statuscode: 200 | Antwortgröße: 96422 Bytes
+2024/09/28 00:16:26 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:16:26 CEST | Methode: GET | URL: /logout/link | RemoteAddr: [::1]:50392
+2024/09/28 00:16:26 middleware.go:98: JWT Cookie nicht gefunden: http: named cookie not present
+2024/09/28 00:16:26 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:16:26 CEST | Dauer: 0s | Statuscode: 401 | Antwortgröße: 13 Bytes
+2024/09/28 00:16:33 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:16:33 CEST | Methode: GET | URL: /app/styles.906baa7422eb9b03.css | RemoteAddr: [::1]:50403
+2024/09/28 00:16:33 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:16:33 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:16:33 CEST | Dauer: 551µs | Statuscode: 200 | Antwortgröße: 24405 Bytes
+2024/09/28 00:16:48 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:16:48 CEST | Methode: GET | URL: /app/api/get/user | RemoteAddr: [::1]:50392
+2024/09/28 00:16:48 middleware.go:98: JWT Cookie nicht gefunden: http: named cookie not present
+2024/09/28 00:16:48 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:16:48 CEST | Dauer: 544.6µs | Statuscode: 401 | Antwortgröße: 13 Bytes
+2024/09/28 00:17:01 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:17:01 CEST | Methode: GET | URL: /auth | RemoteAddr: [::1]:50392
+2024/09/28 00:17:01 auth.go:49: JWT Cookie für Benutzer testuser gesetzt: jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidGVzdHVzZXIiLCJleHAiOjE3Mjc1NjE4MjF9._sSmtTH8Pt80FHiwbcwewg6GVx1-K158Wq9bMzjP40k; Path=/; Domain=localhost; Expires=Sat, 28 Sep 2024 22:17:01 GMT; HttpOnly; SameSite=Lax
+2024/09/28 00:17:01 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:17:01 CEST | Dauer: 0s | Statuscode: 303 | Antwortgröße: 32 Bytes
+2024/09/28 00:17:01 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:17:01 CEST | Methode: GET | URL: /app/ | RemoteAddr: [::1]:50392
+2024/09/28 00:17:01 middleware.go:119: JWT-Token gültig für Benutzer: testuser
+2024/09/28 00:17:01 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:17:01 CEST | Dauer: 161.2µs | Statuscode: 200 | Antwortgröße: 5027 Bytes
+2024/09/28 00:17:16 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:17:16 CEST | Methode: GET | URL: /logout/link | RemoteAddr: [::1]:50392
+2024/09/28 00:17:16 middleware.go:119: JWT-Token gültig für Benutzer: testuser
+2024/09/28 00:17:16 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:17:16 CEST | Dauer: 665µs | Statuscode: 200 | Antwortgröße: 64 Bytes
+2024/09/28 00:17:22 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:17:22 CEST | Methode: GET | URL: /app/api/get/user | RemoteAddr: [::1]:50392
+2024/09/28 00:17:22 middleware.go:119: JWT-Token gültig für Benutzer: testuser
+2024/09/28 00:17:22 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:17:22 CEST | Dauer: 9.4165ms | Statuscode: 200 | Antwortgröße: 93 Bytes
+2024/09/28 00:17:32 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:17:32 CEST | Methode: GET | URL: /api/fragen/ITS | RemoteAddr: [::1]:50392
+2024/09/28 00:17:32 middleware.go:119: JWT-Token gültig für Benutzer: testuser
+2024/09/28 00:17:32 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:17:32 CEST | Dauer: 381.7µs | Statuscode: 404 | Antwortgröße: 19 Bytes
+2024/09/28 00:17:44 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:17:44 CEST | Methode: GET | URL: /app/api/fragen/ITS | RemoteAddr: [::1]:50392
+2024/09/28 00:17:44 middleware.go:119: JWT-Token gültig für Benutzer: testuser
+2024/09/28 00:17:44 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:17:44 CEST | Dauer: 4.2069ms | Statuscode: 200 | Antwortgröße: 1503 Bytes
+2024/09/28 00:18:43 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:18:43 CEST | Methode: GET | URL: /app/api/getlernsite | RemoteAddr: [::1]:50392
+2024/09/28 00:18:43 middleware.go:119: JWT-Token gültig für Benutzer: testuser
+2024/09/28 00:18:43 get_routes.go:121: Fehler: ID fehlt
+2024/09/28 00:18:43 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:18:43 CEST | Dauer: 0s | Statuscode: 400 | Antwortgröße: 9 Bytes
+2024/09/28 00:20:13 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:20:13 CEST | Methode: GET | URL: /app/api/get/user | RemoteAddr: [::1]:50621
+2024/09/28 00:20:13 middleware.go:119: JWT-Token gültig für Benutzer: testuser
+2024/09/28 00:20:13 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:20:13 CEST | Dauer: 520.5µs | Statuscode: 200 | Antwortgröße: 93 Bytes
+2024/09/28 00:21:13 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:21:13 CEST | Methode: GET | URL: /app/api/faecher | RemoteAddr: [::1]:50693
+2024/09/28 00:21:13 middleware.go:119: JWT-Token gültig für Benutzer: testuser
+2024/09/28 00:21:13 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:21:13 CEST | Dauer: 233.1µs | Statuscode: 200 | Antwortgröße: 119 Bytes
+2024/09/28 00:30:40 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:30:40 CEST | Methode: POST | URL: /app/api/save/lerning/site | RemoteAddr: [::1]:51186
+2024/09/28 00:30:40 middleware.go:119: JWT-Token gültig für Benutzer: testuser
+2024/09/28 00:30:40 post_routes.go:61: Fehler: Fehler beim Speichern der Seite: fehler beim Einfügen der neuen Seite: pq: insert or update on table "lernseiten" violates foreign key constraint "lernseiten_benutzer_id_fkey"
+2024/09/28 00:30:40 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:30:40 CEST | Dauer: 7.8609ms | Statuscode: 500 | Antwortgröße: 177 Bytes
+2024/09/28 00:32:34 server.go:65: Der Server läuft auf Port 8080!
+2024/09/28 00:56:43 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:56:43 CEST | Methode: GET | URL: /app/ | RemoteAddr: [::1]:52791
+2024/09/28 00:56:43 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:56:43 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:56:43 CEST | Dauer: 36.8999ms | Statuscode: 200 | Antwortgröße: 5027 Bytes
+2024/09/28 00:56:43 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:56:43 CEST | Methode: GET | URL: /app/runtime.4a6411870e442441.js | RemoteAddr: [::1]:52791
+2024/09/28 00:56:43 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:56:43 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:56:43 CEST | Dauer: 0s | Statuscode: 200 | Antwortgröße: 2755 Bytes
+2024/09/28 00:56:43 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:56:43 CEST | Methode: GET | URL: /app/polyfills.0c93755936eaf698.js | RemoteAddr: [::1]:52792
+2024/09/28 00:56:43 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:56:43 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:56:43 CEST | Methode: GET | URL: /app/main.4c79fde9a2b5240b.js | RemoteAddr: [::1]:52791
+2024/09/28 00:56:43 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:56:43 CEST | Dauer: 0s | Statuscode: 200 | Antwortgröße: 34796 Bytes
+2024/09/28 00:56:43 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:56:43 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:56:43 CEST | Methode: GET | URL: /app/styles.906baa7422eb9b03.css | RemoteAddr: [::1]:52796
+2024/09/28 00:56:43 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:56:43 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:56:43 CEST | Dauer: 525.4µs | Statuscode: 200 | Antwortgröße: 24405 Bytes
+2024/09/28 00:56:43 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:56:43 CEST | Dauer: 525.4µs | Statuscode: 200 | Antwortgröße: 311993 Bytes
+2024/09/28 00:56:43 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:56:43 CEST | Methode: GET | URL: /app/styles.906baa7422eb9b03.css | RemoteAddr: [::1]:52791
+2024/09/28 00:56:43 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:56:43 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:56:43 CEST | Dauer: 364.2µs | Statuscode: 200 | Antwortgröße: 24405 Bytes
+2024/09/28 00:56:43 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:56:43 CEST | Methode: GET | URL: /app/api/faecher | RemoteAddr: [::1]:52791
+2024/09/28 00:56:43 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:56:43 CEST | Methode: GET | URL: /logout/link | RemoteAddr: [::1]:52796
+2024/09/28 00:56:43 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:56:43 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:56:43 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:56:43 CEST | Dauer: 0s | Statuscode: 200 | Antwortgröße: 64 Bytes
+2024/09/28 00:56:43 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:56:43 CEST | Dauer: 742.3µs | Statuscode: 200 | Antwortgröße: 119 Bytes
+2024/09/28 00:56:43 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:56:43 CEST | Methode: GET | URL: /app/assets/img/MainLogo.ico | RemoteAddr: [::1]:52791
+2024/09/28 00:56:43 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:56:43 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:56:43 CEST | Methode: GET | URL: /app/assets/img/logout_btn.svg | RemoteAddr: [::1]:52796
+2024/09/28 00:56:43 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:56:43 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:56:43 CEST | Dauer: 259.6µs | Statuscode: 200 | Antwortgröße: 96422 Bytes
+2024/09/28 00:56:43 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:56:43 CEST | Dauer: 0s | Statuscode: 200 | Antwortgröße: 277 Bytes
+2024/09/28 00:56:43 middleware.go:62: Startzeit: Sat, 28 Sep 2024 00:56:43 CEST | Methode: GET | URL: /app/assets/img/MainLogo.ico | RemoteAddr: [::1]:52796
+2024/09/28 00:56:43 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 00:56:43 middleware.go:74: Endzeit: Sat, 28 Sep 2024 00:56:43 CEST | Dauer: 1.1065ms | Statuscode: 200 | Antwortgröße: 96422 Bytes
+2024/09/28 01:29:15 server.go:65: Der Server läuft auf Port 8080!
+2024/09/28 01:30:02 server.go:65: Der Server läuft auf Port 8080!
+2024/09/28 01:30:05 middleware.go:62: Startzeit: Sat, 28 Sep 2024 01:30:05 CEST | Methode: POST | URL: /app/api/save/lerning/site | RemoteAddr: [::1]:53608
+2024/09/28 01:30:05 middleware.go:119: JWT-Token gültig für Benutzer: testuser
+2024/09/28 01:30:05 post_routes.go:66: Fehler: ungültige Anfrage: invalid character '}' looking for beginning of object key string
+2024/09/28 01:30:05 middleware.go:74: Endzeit: Sat, 28 Sep 2024 01:30:05 CEST | Dauer: 1.0608ms | Statuscode: 400 | Antwortgröße: 85 Bytes
+2024/09/28 01:30:20 middleware.go:62: Startzeit: Sat, 28 Sep 2024 01:30:20 CEST | Methode: POST | URL: /app/api/save/lerning/site | RemoteAddr: [::1]:53608
+2024/09/28 01:30:20 middleware.go:119: JWT-Token gültig für Benutzer: testuser
+2024/09/28 01:30:20 post_routes.go:66: Fehler: fehlende oder ungültige Daten
+2024/09/28 01:30:20 middleware.go:74: Endzeit: Sat, 28 Sep 2024 01:30:20 CEST | Dauer: 0s | Statuscode: 400 | Antwortgröße: 31 Bytes
+2024/09/28 01:30:44 middleware.go:62: Startzeit: Sat, 28 Sep 2024 01:30:44 CEST | Methode: POST | URL: /app/api/save/lerning/site | RemoteAddr: [::1]:53608
+2024/09/28 01:30:44 middleware.go:119: JWT-Token gültig für Benutzer: testuser
+2024/09/28 01:30:44 post_routes.go:66: Fehler: fehlende oder ungültige Daten
+2024/09/28 01:30:44 middleware.go:74: Endzeit: Sat, 28 Sep 2024 01:30:44 CEST | Dauer: 388.2µs | Statuscode: 400 | Antwortgröße: 31 Bytes
+2024/09/28 01:32:27 server.go:65: Der Server läuft auf Port 8080!
+2024/09/28 01:32:35 middleware.go:62: Startzeit: Sat, 28 Sep 2024 01:32:35 CEST | Methode: POST | URL: /app/api/save/lerning/site | RemoteAddr: [::1]:53720
+2024/09/28 01:32:35 middleware.go:119: JWT-Token gültig für Benutzer: testuser
+2024/09/28 01:32:35 post_routes.go:75: Fehler: Fehler beim Abrufen der Benutzer-ID: pq: got 1 parameters but the statement requires 0
+2024/09/28 01:32:35 middleware.go:74: Endzeit: Sat, 28 Sep 2024 01:32:35 CEST | Dauer: 1.0541ms | Statuscode: 500 | Antwortgröße: 87 Bytes
+2024/09/28 01:33:26 server.go:65: Der Server läuft auf Port 8080!
+2024/09/28 01:33:31 middleware.go:62: Startzeit: Sat, 28 Sep 2024 01:33:31 CEST | Methode: POST | URL: /app/api/save/lerning/site | RemoteAddr: [::1]:53746
+2024/09/28 01:33:31 middleware.go:119: JWT-Token gültig für Benutzer: testuser
+2024/09/28 01:33:31 post_routes.go:75: Fehler: fehler beim Speichern der Seite: ungültiger Datentyp für Daten: []uint8
+2024/09/28 01:33:31 middleware.go:74: Endzeit: Sat, 28 Sep 2024 01:33:31 CEST | Dauer: 1.2851ms | Statuscode: 500 | Antwortgröße: 74 Bytes
+2024/09/28 01:35:56 server.go:65: Der Server läuft auf Port 8080!
+2024/09/28 01:36:01 middleware.go:62: Startzeit: Sat, 28 Sep 2024 01:36:01 CEST | Methode: POST | URL: /app/api/save/lerning/site | RemoteAddr: [::1]:53845
+2024/09/28 01:36:01 middleware.go:119: JWT-Token gültig für Benutzer: testuser
+2024/09/28 01:36:01 site_funcs.go:230: Neue Seite mit ID 1 und Titel Neue Lernseite erfolgreich erstellt.
+2024/09/28 01:36:01 middleware.go:74: Endzeit: Sat, 28 Sep 2024 01:36:01 CEST | Dauer: 2.503ms | Statuscode: 200 | Antwortgröße: 44 Bytes
+2024/09/28 01:36:16 middleware.go:62: Startzeit: Sat, 28 Sep 2024 01:36:16 CEST | Methode: GET | URL: /app/api/getlernsite | RemoteAddr: [::1]:53845
+2024/09/28 01:36:16 middleware.go:119: JWT-Token gültig für Benutzer: testuser
+2024/09/28 01:36:16 get_routes.go:121: Fehler: ID fehlt
+2024/09/28 01:36:16 middleware.go:74: Endzeit: Sat, 28 Sep 2024 01:36:16 CEST | Dauer: 66.2µs | Statuscode: 400 | Antwortgröße: 9 Bytes
+2024/09/28 01:36:33 middleware.go:62: Startzeit: Sat, 28 Sep 2024 01:36:33 CEST | Methode: GET | URL: /app/api/getlernsite | RemoteAddr: [::1]:53845
+2024/09/28 01:36:33 middleware.go:119: JWT-Token gültig für Benutzer: testuser
+2024/09/28 01:36:33 get_routes.go:121: Fehler: ID fehlt
+2024/09/28 01:36:33 middleware.go:74: Endzeit: Sat, 28 Sep 2024 01:36:33 CEST | Dauer: 666.5µs | Statuscode: 400 | Antwortgröße: 9 Bytes
+2024/09/28 01:37:20 middleware.go:62: Startzeit: Sat, 28 Sep 2024 01:37:20 CEST | Methode: POST | URL: /app/api/save/lerning/site | RemoteAddr: [::1]:53845
+2024/09/28 01:37:20 middleware.go:119: JWT-Token gültig für Benutzer: testuser
+2024/09/28 01:37:20 site_funcs.go:217: Seite mit dem Titel Neue Lernseite erfolgreich aktualisiert.
+2024/09/28 01:37:20 middleware.go:74: Endzeit: Sat, 28 Sep 2024 01:37:20 CEST | Dauer: 2.3205ms | Statuscode: 200 | Antwortgröße: 44 Bytes
+2024/09/28 01:37:38 middleware.go:62: Startzeit: Sat, 28 Sep 2024 01:37:38 CEST | Methode: POST | URL: /app/api/save/lerning/site | RemoteAddr: [::1]:53845
+2024/09/28 01:37:38 middleware.go:119: JWT-Token gültig für Benutzer: testuser
+2024/09/28 01:37:38 site_funcs.go:217: Seite mit dem Titel Neue Lernseite erfolgreich aktualisiert.
+2024/09/28 01:37:38 middleware.go:74: Endzeit: Sat, 28 Sep 2024 01:37:38 CEST | Dauer: 1.2145ms | Statuscode: 200 | Antwortgröße: 44 Bytes
+2024/09/28 01:40:06 middleware.go:62: Startzeit: Sat, 28 Sep 2024 01:40:06 CEST | Methode: GET | URL: /app/api/getlernsite?id=1 | RemoteAddr: [::1]:54136
+2024/09/28 01:40:06 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 01:40:06 get_routes.go:121: Fehler: Fehler beim Abrufen der Datei: fehler beim Abrufen der Datei: sql: expected 5 destination arguments in Scan, not 4
+2024/09/28 01:40:06 middleware.go:74: Endzeit: Sat, 28 Sep 2024 01:40:06 CEST | Dauer: 653.9µs | Statuscode: 500 | Antwortgröße: 115 Bytes
+2024/09/28 01:43:21 server.go:65: Der Server läuft auf Port 8080!
+2024/09/28 01:43:32 middleware.go:62: Startzeit: Sat, 28 Sep 2024 01:43:32 CEST | Methode: GET | URL: /app/api/getlernsite?querytitel=AWP | RemoteAddr: [::1]:54251
+2024/09/28 01:43:32 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 01:43:32 get_routes.go:113: Fehler: ID fehlt
+2024/09/28 01:43:32 middleware.go:74: Endzeit: Sat, 28 Sep 2024 01:43:32 CEST | Dauer: 0s | Statuscode: 400 | Antwortgröße: 9 Bytes
+2024/09/28 01:44:47 middleware.go:62: Startzeit: Sat, 28 Sep 2024 01:44:47 CEST | Methode: GET | URL: /app/api/getlernsite?querytitel=Neue%20Lernseite | RemoteAddr: [::1]:54251
+2024/09/28 01:44:47 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 01:44:47 get_routes.go:113: Fehler: ID fehlt
+2024/09/28 01:44:47 middleware.go:74: Endzeit: Sat, 28 Sep 2024 01:44:47 CEST | Dauer: 123.4µs | Statuscode: 400 | Antwortgröße: 9 Bytes
+2024/09/28 01:44:50 middleware.go:62: Startzeit: Sat, 28 Sep 2024 01:44:50 CEST | Methode: GET | URL: /app/api/getlernsite?querytitel=Neue%20Lernseite | RemoteAddr: [::1]:54251
+2024/09/28 01:44:50 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 01:44:50 get_routes.go:113: Fehler: ID fehlt
+2024/09/28 01:44:50 middleware.go:74: Endzeit: Sat, 28 Sep 2024 01:44:50 CEST | Dauer: 0s | Statuscode: 400 | Antwortgröße: 9 Bytes
+2024/09/28 01:45:02 server.go:65: Der Server läuft auf Port 8080!
+2024/09/28 01:45:05 middleware.go:62: Startzeit: Sat, 28 Sep 2024 01:45:05 CEST | Methode: GET | URL: /app/api/getlernsite?querytitel=Neue%20Lernseite | RemoteAddr: [::1]:56086
+2024/09/28 01:45:05 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 01:45:05 get_routes.go:113: Fehler: titel fehlt
+2024/09/28 01:45:05 middleware.go:74: Endzeit: Sat, 28 Sep 2024 01:45:05 CEST | Dauer: 525.2µs | Statuscode: 400 | Antwortgröße: 12 Bytes
+2024/09/28 01:45:34 middleware.go:62: Startzeit: Sat, 28 Sep 2024 01:45:34 CEST | Methode: GET | URL: /app/api/getlernsite?titel=Neue%20Lernseite | RemoteAddr: [::1]:56086
+2024/09/28 01:45:34 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 01:45:34 get_routes.go:113: Fehler: Fehler beim Abrufen der Datei: fehler beim Abrufen der Datei: sql: expected 5 destination arguments in Scan, not 4
+2024/09/28 01:45:34 middleware.go:74: Endzeit: Sat, 28 Sep 2024 01:45:34 CEST | Dauer: 842.1µs | Statuscode: 500 | Antwortgröße: 115 Bytes
+2024/09/28 01:50:11 server.go:65: Der Server läuft auf Port 8080!
+2024/09/28 01:50:15 middleware.go:62: Startzeit: Sat, 28 Sep 2024 01:50:15 CEST | Methode: GET | URL: /app/api/getlernsite?titel=Neue%20Lernseite | RemoteAddr: [::1]:58026
+2024/09/28 01:50:15 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 01:50:15 middleware.go:74: Endzeit: Sat, 28 Sep 2024 01:50:15 CEST | Dauer: 1.0387ms | Statuscode: 200 | Antwortgröße: 119 Bytes
+2024/09/28 01:50:33 middleware.go:62: Startzeit: Sat, 28 Sep 2024 01:50:33 CEST | Methode: GET | URL: /app/api/getlernsite?titel=AWP | RemoteAddr: [::1]:58026
+2024/09/28 01:50:33 middleware.go:119: JWT-Token gültig für Benutzer: Finn-dot-de
+2024/09/28 01:50:33 get_routes.go:113: Fehler: Fehler beim Abrufen der Datei: keine Datei mit dem Titel AWP gefunden
+2024/09/28 01:50:33 middleware.go:74: Endzeit: Sat, 28 Sep 2024 01:50:33 CEST | Dauer: 998.2µs | Statuscode: 500 | Antwortgröße: 70 Bytes

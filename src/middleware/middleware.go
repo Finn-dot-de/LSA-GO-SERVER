@@ -12,6 +12,14 @@ import (
 // Definiert ein einheitliches Zeitformat als Konstante
 const timeFormat = time.RFC1123
 
+// responseWriterWrapper ist eine Struktur, die http.ResponseWriter erweitert,
+// um Statuscode und Antwortgröße mitzuprotokollieren.
+type responseWriterWrapper struct {
+	http.ResponseWriter
+	statusCode int
+	size       int
+}
+
 // InitializeLogger konfiguriert das Logging und leitet Ausgaben sowohl in eine Datei als auch in die Konsole um.
 func InitializeLogger(logFile string) error {
 	// Versucht, die Log-Datei im Append-Modus zu öffnen oder zu erstellen
@@ -32,8 +40,21 @@ func InitializeLogger(logFile string) error {
 	return nil
 }
 
-// LoggerMiddleware protokolliert die Details jeder eingehenden HTTP-Anfrage,
-// einschließlich Startzeit, Methode, URL und Dauer der Anfrage.
+// WriteHeader erfasst den Statuscode der Antwort.
+func (rw *responseWriterWrapper) WriteHeader(code int) {
+	rw.statusCode = code
+	rw.ResponseWriter.WriteHeader(code)
+}
+
+// Write erfasst die Größe der Antwort.
+func (rw *responseWriterWrapper) Write(b []byte) (int, error) {
+	size, err := rw.ResponseWriter.Write(b)
+	rw.size += size
+	return size, err
+}
+
+// LoggerMiddleware protokolliert die Details jeder eingehenden HTTP-Anfrage und -Antwort,
+// einschließlich Startzeit, Methode, URL, Statuscode und Dauer der Anfrage.
 func LoggerMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Startzeit wird aufgezeichnet
@@ -41,15 +62,17 @@ func LoggerMiddleware(next http.Handler) http.Handler {
 		log.Printf("Startzeit: %s | Methode: %s | URL: %s | RemoteAddr: %s",
 			start.Format(timeFormat), r.Method, r.RequestURI, r.RemoteAddr)
 
-		// defer stellt sicher, dass die Endzeit und Dauer auch dann protokolliert werden,
-		// wenn der nachfolgende Handler einen Fehler verursacht oder die Funktion vorzeitig beendet wird.
-		defer func() {
-			end := time.Now()
-			log.Printf("Endzeit: %s | Dauer: %s", end.Format(timeFormat), end.Sub(start))
-		}()
+		// Wrap den ResponseWriter, um Status und Größe zu erfassen
+		wrappedWriter := &responseWriterWrapper{ResponseWriter: w, statusCode: http.StatusOK}
 
 		// Der nächste Handler in der Kette wird aufgerufen
-		next.ServeHTTP(w, r)
+		next.ServeHTTP(wrappedWriter, r)
+
+		// Endzeit und Dauer werden protokolliert
+		end := time.Now()
+		duration := end.Sub(start)
+		log.Printf("Endzeit: %s | Dauer: %s | Statuscode: %d | Antwortgröße: %d Bytes",
+			end.Format(timeFormat), duration, wrappedWriter.statusCode, wrappedWriter.size)
 	})
 }
 

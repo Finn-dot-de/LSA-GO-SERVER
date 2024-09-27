@@ -1,4 +1,4 @@
-package userhandler
+package user_func
 
 import (
 	"database/sql"
@@ -34,14 +34,28 @@ func GetUserFromDB(userkuerzel string, db *sql.DB) (*structs.Benutzer, error) {
 		// Detaillierte Fehlerbehandlung: Überprüfen, ob keine Zeilen gefunden wurden
 		if errors.Is(err, sql.ErrNoRows) {
 			log.Printf("Benutzer '%s' nicht gefunden", userkuerzel)
-			return nil, fmt.Errorf("Benutzername '%s' nicht gefunden", userkuerzel)
+			return nil, fmt.Errorf("benutzername '%s' nicht gefunden", userkuerzel)
 		}
 
 		// Allgemeine Fehlerbehandlung und Logging
 		log.Printf("Fehler beim Abrufen der Benutzerdaten für '%s': %v", userkuerzel, err)
-		return nil, fmt.Errorf("Fehler beim Abrufen der Benutzerdaten: %v", err)
+		return nil, fmt.Errorf("fehler beim Abrufen der Benutzerdaten: %v", err)
 	}
 
 	// Erfolgreich gefundene Benutzerdaten zurückgeben
 	return &benutzer, nil
+}
+
+func GetUserID(db *sql.DB, kuerzel string) (int, error) {
+	var query string
+
+	query = `SELECT id FROM benutzer WHERE userkuerzel = $1`
+
+	var userID int
+	err := db.QueryRow(query, kuerzel).Scan(&userID)
+	if err != nil {
+		return userID, err
+	}
+
+	return userID, nil
 }

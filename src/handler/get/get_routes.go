@@ -5,13 +5,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/Finn-dot-de/LernStoffAnwendung/src/handler_func/site_funcs"
+	"github.com/Finn-dot-de/LernStoffAnwendung/src/handler_func/site_func"
 	"github.com/Finn-dot-de/LernStoffAnwendung/src/handler_func/user_func"
+	"github.com/go-chi/chi"
 	"log"
 	"net/http"
-	"strconv"
-
-	"github.com/go-chi/chi"
 )
 
 // DefineGetRoutes definiert alle GET-Routen der Anwendung
@@ -21,7 +19,7 @@ func DefineGetRoutes(r *chi.Mux, db *sql.DB) {
 		w.Header().Set("Content-Type", "application/json")
 		fachName := chi.URLParam(r, "name")
 
-		fach, err := site_funcs.GetFragenFromDBNachFach(db, fachName)
+		fach, err := site_func.GetFragenFromDBByFach(db, fachName)
 		if err != nil {
 			handleError(w, fmt.Errorf("Fehler beim Abrufen der Fragen für Fach %s: %v", fachName, err), http.StatusInternalServerError)
 			return
@@ -34,7 +32,7 @@ func DefineGetRoutes(r *chi.Mux, db *sql.DB) {
 	r.Get("/app/api/faecher", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
-		faecher, err := site_funcs.GetFeacherFromDB(db)
+		faecher, err := site_func.GetFeacherFromDB(db)
 		if err != nil {
 			handleError(w, fmt.Errorf("Fehler beim Abrufen der Fächer: %v", err), http.StatusInternalServerError)
 			return
@@ -59,19 +57,13 @@ func DefineGetRoutes(r *chi.Mux, db *sql.DB) {
 	r.Get("/app/api/getlernsite", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
-		idStr := r.URL.Query().Get("id")
-		if idStr == "" {
-			handleError(w, errors.New("ID fehlt"), http.StatusBadRequest)
+		querytitel := r.URL.Query().Get("titel")
+		if querytitel == "" {
+			handleError(w, errors.New("titel fehlt"), http.StatusBadRequest)
 			return
 		}
 
-		id, err := strconv.Atoi(idStr)
-		if err != nil {
-			handleError(w, errors.New("Ungültige ID"), http.StatusBadRequest)
-			return
-		}
-
-		lernseite, err := site_funcs.GetLernseiteByID(db, id)
+		lernseite, err := site_func.GetLernseiteByID(db, querytitel)
 		if err != nil {
 			if errors.Is(err, sql.ErrNoRows) {
 				handleError(w, errors.New("Seite nicht gefunden, bitte eine neue erstellen"), http.StatusNotFound)
@@ -94,7 +86,7 @@ func DefineGetRoutes(r *chi.Mux, db *sql.DB) {
 			return
 		}
 
-		userdata, err := userhandler.GetUserFromDB(userkuerzel, db)
+		userdata, err := user_func.GetUserFromDB(userkuerzel, db)
 		if err != nil {
 			if err.Error() == "Benutzername nicht gefunden" {
 				handleError(w, errors.New("Benutzer nicht gefunden"), http.StatusNotFound)

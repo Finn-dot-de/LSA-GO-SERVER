@@ -1,12 +1,12 @@
-package site_funcs
+package site_func
 
 import (
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
-
 	"github.com/Finn-dot-de/LernStoffAnwendung/src/structs/structs"
+	"log"
 )
 
 // GetFeacherFromDB ruft die Fächer aus der Datenbank ab und gibt sie als Slice zurück.
@@ -50,68 +50,21 @@ func GetFeacherFromDB(db *sql.DB) ([]structs.Schulfach, error) {
 	return feacher, nil
 }
 
-// GetSitesFromDB Seiten aus der Datenbank abrufen
-func GetSitesFromDB(db *sql.DB) ([]structs.Lernseite, error) {
-	query := `
-    SELECT id, titel, daten, benutzer_id, erstellungsdatum
-    FROM lernseiten;
-    `
-
-	rows, err := db.Query(query)
-	if err != nil {
-		return nil, fmt.Errorf("fehler beim Abrufen der Seiten: %v", err)
-	}
-	defer func(rows *sql.Rows) {
-		err := rows.Close()
-		if err != nil {
-
-		}
-	}(rows)
-
-	var lernseiten []structs.Lernseite
-
-	// Hilfsfunktion für das Scannen von Rows
-	err = scanLernseiten(rows, &lernseiten)
-	if err != nil {
-		return nil, err
-	}
-
-	return lernseiten, nil
-}
-
-// scanLernseiten scannt die Rows und fügt sie zur gegebenen Lernseiten-Liste hinzu
-func scanLernseiten(rows *sql.Rows, lernseiten *[]structs.Lernseite) error {
-	for rows.Next() {
-		var lernseite structs.Lernseite
-		err := rows.Scan(&lernseite.ID, &lernseite.Titel, &lernseite.DateiPfad, &lernseite.BenutzerID, &lernseite.Erstellungsdatum)
-		if err != nil {
-			return fmt.Errorf("fehler beim Scannen der Daten: %v", err)
-		}
-		*lernseiten = append(*lernseiten, lernseite)
-	}
-
-	if err := rows.Err(); err != nil {
-		return fmt.Errorf("fehler bei der Verarbeitung der Daten: %v", err)
-	}
-
-	return nil
-}
-
 // GetLernseiteByID Funktion, um eine Seite basierend auf der ID aus der Datenbank abzurufen
-func GetLernseiteByID(db *sql.DB, id int) (*structs.Lernseite, error) {
+func GetLernseiteByID(db *sql.DB, titel string) (*structs.Lernseite, error) {
 	query := `
-		SELECT id, titel, datei_pfad, benutzer_id, erstellungsdatum
+		SELECT id, titel, daten, benutzer_id, erstellungsdatum
 		FROM lernseiten
-		WHERE id = $1;
+		WHERE titel = $1;
 	`
 
-	row := db.QueryRow(query, id)
+	row := db.QueryRow(query, titel)
 
 	var lernseite structs.Lernseite
-	err := row.Scan(&lernseite.ID, &lernseite.Titel, &lernseite.DateiPfad, &lernseite.BenutzerID, &lernseite.Erstellungsdatum)
+	err := row.Scan(&lernseite.ID, &lernseite.Titel, &lernseite.Text, &lernseite.BenutzerID, &lernseite.Erstellungsdatum)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return nil, fmt.Errorf("keine Datei mit ID %d gefunden", id)
+			return nil, fmt.Errorf("keine Datei mit dem Titel %s gefunden", titel)
 		}
 		return nil, fmt.Errorf("fehler beim Abrufen der Datei: %v", err)
 	}
@@ -119,8 +72,8 @@ func GetLernseiteByID(db *sql.DB, id int) (*structs.Lernseite, error) {
 	return &lernseite, nil
 }
 
-// GetFragenFromDBNachFach ruft alle Fragen zu einem bestimmten Thema aus der Datenbank ab und gibt sie zurück.
-func GetFragenFromDBNachFach(db *sql.DB, FachName string) ([]structs.Frage, error) {
+// GetFragenFromDBByFach ruft alle Fragen zu einem bestimmten Thema aus der Datenbank ab und gibt sie zurück.
+func GetFragenFromDBByFach(db *sql.DB, FachName string) ([]structs.Frage, error) {
 	query := `
 	SELECT
 	    fragen.id,
@@ -208,47 +161,73 @@ func scanFragen(rows *sql.Rows, fragen *[]structs.Frage) error {
 }
 
 // CheckIfLernseiteExists prüft, ob eine Seite in der Datenbank existiert
-func CheckIfLernseiteExists(db *sql.DB, id int) (bool, error) {
+func CheckIfLernseiteExists(db *sql.DB, titel string) (bool, error) {
 	var exists bool
-	query := "SELECT EXISTS(SELECT 1 FROM lernseiten WHERE id=$1)"
-	err := db.QueryRow(query, id).Scan(&exists)
+	query := "SELECT EXISTS(SELECT 1 FROM lernseiten WHERE titel=$1)"
+	err := db.QueryRow(query, titel).Scan(&exists)
 	if err != nil {
 		return false, fmt.Errorf("fehler beim Überprüfen der Seite: %v", err)
 	}
 	return exists, nil
 }
 
-// SaveLearningSitesByID speichert oder aktualisiert eine Lernseite basierend auf der ID
-func SaveLearningSitesByID(db *sql.DB, id int, titel string, daten string, benutzerID int) error {
-	exists, err := CheckIfLernseiteExists(db, id)
+// SaveLearningSitesByID speichert oder aktualisiert eine Lernseite basierend auf dem Titel.
+// Die Funktion konvertiert die Eingabedaten in Byte-Array (bytea), um mit der Datenbank kompatibel zu sein.
+func SaveLearningSitesByID(db *sql.DB, titel string, daten interface{}, benutzerID int) error {
+	// Daten in []byte umwandeln, basierend auf dem Typ des Eingabewerts.
+	var byteData []byte
+	var err error
+
+	switch v := daten.(type) {
+	case string:
+		// Konvertiert normalen Text in []byte
+		byteData = []byte(v)
+	case []uint8:
+		// []uint8 ist ein Alias für []byte, also direkt zuweisen
+		byteData = v
+	case map[string]interface{}, []interface{}:
+		// Versucht, JSON-ähnliche Strukturen in []byte zu konvertieren
+		byteData, err = json.Marshal(v)
+		if err != nil {
+			return fmt.Errorf("fehler beim Konvertieren der Daten in JSON-Bytes: %v", err)
+		}
+	default:
+		// Generischer Fall, falls ein anderer Typ vorliegt
+		return fmt.Errorf("ungültiger Datentyp für Daten: %T", v)
+	}
+
+	// Überprüft, ob eine Seite mit dem gegebenen Titel bereits existiert.
+	exists, err := CheckIfLernseiteExists(db, titel)
 	if err != nil {
 		return fmt.Errorf("fehler beim Überprüfen der Seite: %v", err)
 	}
 
 	var query string
 	if exists {
+		// Update einer existierenden Seite
 		query = `
         UPDATE lernseiten 
-        SET titel = $1, daten = $2, benutzer_id = $3
-        WHERE id = $4;
+        SET daten = $1, benutzer_id = $2
+        WHERE titel = $3;
         `
-		_, err = db.Exec(query, titel, daten, benutzerID, id)
+		_, err = db.Exec(query, byteData, benutzerID, titel)
 		if err != nil {
 			return fmt.Errorf("fehler beim Aktualisieren der Seite: %v", err)
 		}
-		log.Printf("Seite mit ID %d erfolgreich aktualisiert.\n", id)
+		log.Printf("Seite mit dem Titel %s erfolgreich aktualisiert.\n", titel)
 	} else {
+		// Einfügen einer neuen Seite
 		query = `
         INSERT INTO lernseiten (titel, daten, benutzer_id)
         VALUES ($1, $2, $3)
         RETURNING id;
         `
 		var lastInsertID int
-		err = db.QueryRow(query, titel, daten, benutzerID).Scan(&lastInsertID)
+		err = db.QueryRow(query, titel, byteData, benutzerID).Scan(&lastInsertID)
 		if err != nil {
 			return fmt.Errorf("fehler beim Einfügen der neuen Seite: %v", err)
 		}
-		log.Printf("Neue Seite mit ID %d erfolgreich erstellt.\n", lastInsertID)
+		log.Printf("Neue Seite mit ID %d und Titel %s erfolgreich erstellt.\n", lastInsertID, titel)
 	}
 
 	return nil
