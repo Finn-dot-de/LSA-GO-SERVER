@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Finn-dot-de/LernStoffAnwendung/src/handler/site_funcs"
+	"github.com/Finn-dot-de/LernStoffAnwendung/src/handler_func/site_funcs"
 	"github.com/Finn-dot-de/LernStoffAnwendung/src/structs/structs"
 	"github.com/go-chi/chi"
 )
