@@ -27,6 +27,7 @@ func DefinePostRoutes(r *chi.Mux, db *sql.DB) {
 
 		// Benutzer-Kürzel aus den Headern auslesen und Benutzer-ID abrufen
 		kuerzel := r.Header.Get("X-Forwarded-User")
+		kuerzel = "Finn-dot-de"
 		BenutzerID, err := user_func.GetUserID(db, kuerzel)
 		if err != nil {
 			handleError(w, fmt.Errorf("Fehler beim Abrufen der Benutzer-ID: %v", err), http.StatusInternalServerError)

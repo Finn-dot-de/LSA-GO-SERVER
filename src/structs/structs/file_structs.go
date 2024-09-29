@@ -8,9 +8,9 @@ type SavedRequestFile struct {
 }
 
 type Lernseite struct {
-	ID               int
-	Titel            string
-	Text             string
-	BenutzerID       int
-	Erstellungsdatum string
+	ID               int    `json:"id"`
+	Titel            string `json:"titel"`
+	Text             string `json:"text"`
+	BenutzerID       int    `json:"benutzerId"`
+	Erstellungsdatum string `json:"erstellungsdatum"`
 }

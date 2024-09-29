@@ -69,7 +69,10 @@ func GetLernseiteByID(db *sql.DB, titel string) (*structs.Lernseite, error) {
 		return nil, fmt.Errorf("fehler beim Abrufen der Datei: %v", err)
 	}
 
-	return &lernseite, nil
+	// Konvertiere die Bytes zurück in einen lesbaren String
+	lernseite.Text = string(lernseite.Text)
+
+	return &lernseite, err
 }
 
 // GetFragenFromDBByFach ruft alle Fragen zu einem bestimmten Thema aus der Datenbank ab und gibt sie zurück.

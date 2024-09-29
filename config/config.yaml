@@ -1,0 +1,13 @@
+roles:
+  admin:
+    can_edit: true
+    can_delete: true
+  schueler:
+    can_edit: false
+    can_delete: false
+  lehrer:
+    can_edit: true
+    can_delete: true
+  zuschauer:
+    can_edit: false
+    can_delete: false

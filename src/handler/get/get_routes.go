@@ -53,7 +53,7 @@ func DefineGetRoutes(r *chi.Mux, db *sql.DB) {
 		sendJSONResponse(w, link)
 	})
 
-	// API-Endpunkt für das Abrufen einer Datei basierend auf ihrer ID
+	// API-Endpunkt für das Abrufen einer Datei basierend auf ihrem Titel
 	r.Get("/app/api/getlernsite", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
@@ -81,6 +81,7 @@ func DefineGetRoutes(r *chi.Mux, db *sql.DB) {
 		w.Header().Set("Content-Type", "application/json")
 
 		userkuerzel := r.Header.Get("X-Forwarded-User")
+		userkuerzel = "Finn-dot-de"
 		if userkuerzel == "" {
 			handleError(w, errors.New("Kein angemeldeter Benutzer"), http.StatusBadRequest)
 			return
